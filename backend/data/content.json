@@ -1,0 +1,70 @@
+{
+  "sectors": [
+    {
+      "id": "real-estate",
+      "name": "Real Estate & Development",
+      "description": "Creating sustainable spaces that inspire and enrich communities.",
+      "icon": "building"
+    },
+    {
+      "id": "financial-services",
+      "name": "Financial Services",
+      "description": "Delivering innovative financial solutions for individuals and businesses.",
+      "icon": "trending-up"
+    },
+    {
+      "id": "agriculture",
+      "name": "Agriculture & Agro-Processing",
+      "description": "Producing value and promoting food security through innovation.",
+      "icon": "leaf"
+    },
+    {
+      "id": "trading-distribution",
+      "name": "Trading & Distribution",
+      "description": "Reliable supply chains and distribution across diverse markets.",
+      "icon": "shopping-cart"
+    },
+    {
+      "id": "energy-infrastructure",
+      "name": "Energy & Infrastructure",
+      "description": "Powering progress through sustainable energy and infrastructure.",
+      "icon": "zap"
+    },
+    {
+      "id": "hospitality",
+      "name": "Hospitality & Services",
+      "description": "Delivering exceptional experiences with world-class standards.",
+      "icon": "users"
+    }
+  ],
+  "stats": [
+    { "id": "sectors", "value": "6+", "label": "Sectors", "icon": "globe" },
+    { "id": "subsidiaries", "value": "20+", "label": "Subsidiary Companies", "icon": "building" },
+    { "id": "employees", "value": "2,500+", "label": "Employees", "icon": "users" },
+    { "id": "performance", "value": "Strong", "label": "Financial Performance", "icon": "bar-chart" },
+    { "id": "presence", "value": "Regional", "label": "Presence", "icon": "map-pin" }
+  ],
+  "news": [
+    {
+      "id": 1,
+      "category": "Corporate",
+      "title": "Vink Holdings Reports Strong Growth in 2024 Financial Year",
+      "date": "2025-05-20",
+      "excerpt": "Vink Holdings closed the 2024 financial year with strong growth across its diversified portfolio, driven by disciplined execution across all six business sectors and continued expansion of subsidiary operations throughout the region."
+    },
+    {
+      "id": 2,
+      "category": "Sustainability",
+      "title": "Investing in a Greener Tomorrow Through Renewable Energy",
+      "date": "2025-05-12",
+      "excerpt": "As part of its long-term sustainability commitments, Vink Holdings is expanding its investment in renewable energy infrastructure, supporting the group's Energy & Infrastructure sector and reducing the environmental footprint of its operations."
+    },
+    {
+      "id": 3,
+      "category": "Community",
+      "title": "Empowering Communities, Transforming Lives",
+      "date": "2025-04-28",
+      "excerpt": "Through its corporate social responsibility programmes, Vink Holdings continues to invest in the communities where it operates, focusing on education, enterprise development, and local job creation."
+    }
+  ]
+}
