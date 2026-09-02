@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Send, ArrowUp, Loader2 } from "lucide-react";
 import LogoMark from "./Logo.jsx";
 import { LinkedinIcon, TwitterIcon, FacebookIcon, YoutubeIcon } from "./SocialIcons.jsx";
@@ -7,26 +8,36 @@ import { subscribeNewsletter } from "../api.js";
 const COLUMNS = [
   {
     title: "Company",
-    links: ["About Us", "Our Leadership", "Our Approach", "Governance", "Careers"],
+    links: [
+      { label: "About Us", to: "/about" },
+      { label: "Our Leadership", to: "/about#leadership" },
+      { label: "Governance", to: "/about#governance" },
+      { label: "Careers", to: "/careers" },
+    ],
   },
   {
     title: "Our Businesses",
     links: [
-      "Real Estate & Development",
-      "Financial Services",
-      "Agriculture & Agro-Processing",
-      "Trading & Distribution",
-      "Energy & Infrastructure",
-      "Hospitality & Services",
+      { label: "Real Estate & Development", to: "/businesses/real-estate" },
+      { label: "Financial Services", to: "/businesses/financial-services" },
+      { label: "Agriculture & Agro-Processing", to: "/businesses/agriculture" },
+      { label: "Trading & Distribution", to: "/businesses/trading-distribution" },
+      { label: "Energy & Infrastructure", to: "/businesses/energy-infrastructure" },
+      { label: "Hospitality & Services", to: "/businesses/hospitality" },
     ],
   },
   {
     title: "Investors",
-    links: ["Investor Overview", "Financial Reports", "Presentations", "Shareholder Information", "News & Announcements"],
+    links: [
+      { label: "Investor Overview", to: "/investors" },
+      { label: "Financial Reports", to: "/investors#reports" },
+      { label: "Shareholder Information", to: "/investors#governance" },
+      { label: "News & Announcements", to: "/news" },
+    ],
   },
 ];
 
-export default function Footer({ onNavigate }) {
+export default function Footer() {
   const [email, setEmail] = useState("");
   const [state, setState] = useState({ status: "idle", message: "" });
 
@@ -42,24 +53,20 @@ export default function Footer({ onNavigate }) {
     }
   };
 
-  const scrollTo = (id) => {
-    document.querySelector(`#${id}`)?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <footer id="contact" className="border-t border-vh-line">
+    <footer className="border-t border-vh-line">
       <div className="px-6 lg:px-8 pt-16 pb-8 max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <LogoMark size={40} />
               <span className="leading-tight">
                 <span className="block font-display text-base text-vh-cream">VINK</span>
                 <span className="block text-[10px] tracking-[0.25em] text-vh-gold -mt-1">HOLDINGS</span>
               </span>
-            </div>
+            </Link>
             <p className="mt-4 text-xs text-vh-cream/60 leading-relaxed max-w-[220px]">
-              Building sustainable value across generations through diverse businesses and strategic investments.
+              Building sustainable value across generations through diverse businesses and strategic investments in seven African markets.
             </p>
             <div className="mt-5 flex items-center gap-3">
               {[LinkedinIcon, TwitterIcon, FacebookIcon, YoutubeIcon].map((Icon, i) => (
@@ -81,10 +88,10 @@ export default function Footer({ onNavigate }) {
               <h4 className="text-xs tracking-[0.15em] text-vh-gold mb-4">{col.title.toUpperCase()}</h4>
               <ul className="space-y-2.5">
                 {col.links.map((link) => (
-                  <li key={link}>
-                    <a href="#" onClick={(e) => e.preventDefault()} className="text-xs text-vh-cream/65 hover:text-vh-gold transition-colors">
-                      {link}
-                    </a>
+                  <li key={link.label}>
+                    <Link to={link.to} className="text-xs text-vh-cream/65 hover:text-vh-gold transition-colors">
+                      {link.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -107,6 +114,11 @@ export default function Footer({ onNavigate }) {
                 <a href="mailto:info@vinkholdings.com" className="flex items-center gap-2 hover:text-vh-gold transition-colors">
                   <Mail size={14} className="text-vh-gold" /> info@vinkholdings.com
                 </a>
+              </li>
+              <li>
+                <Link to="/contact" className="inline-block mt-1 text-vh-gold hover:text-vh-gold-light">
+                  Full contact page →
+                </Link>
               </li>
             </ul>
 
@@ -147,7 +159,7 @@ export default function Footer({ onNavigate }) {
             <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-vh-gold">Sitemap</a>
           </div>
           <button
-            onClick={() => scrollTo("home")}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="flex items-center gap-1.5 hover:text-vh-gold transition-colors"
           >
             Back to Top <ArrowUp size={12} />

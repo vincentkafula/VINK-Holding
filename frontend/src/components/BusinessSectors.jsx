@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Building2, TrendingUp, Leaf, ShoppingCart, Zap, Users, ArrowRight } from "lucide-react";
 import { getSectors } from "../api.js";
 
@@ -14,7 +15,7 @@ const ICONS = {
 const FALLBACK_IMAGE_HUES = ["#1d3324", "#1a2b3d", "#2c3018", "#1d2530", "#3d2f14", "#182a2c"];
 const ICON_BG = ["bg-vh-gold", "bg-vh-green-accent", "bg-vh-gold", "bg-vh-green-accent", "bg-vh-gold", "bg-vh-green-accent"];
 
-export default function BusinessSectors({ onSelect }) {
+export default function BusinessSectors() {
   const [sectors, setSectors] = useState([]);
   const [status, setStatus] = useState("loading");
 
@@ -54,10 +55,10 @@ export default function BusinessSectors({ onSelect }) {
           {sectors.map((sector, i) => {
             const Icon = ICONS[sector.icon] || Building2;
             return (
-              <button
+              <Link
                 key={sector.id}
-                onClick={() => onSelect(sector)}
-                className="group text-left rounded-sm border border-vh-line bg-vh-forest-card overflow-hidden hover:border-vh-gold/60 transition-colors"
+                to={`/businesses/${sector.id}`}
+                className="group text-left rounded-sm border border-vh-line bg-vh-forest-card overflow-hidden hover:border-vh-gold/60 transition-colors block"
               >
                 <div
                   className="h-28 relative flex items-center justify-center"
@@ -69,12 +70,12 @@ export default function BusinessSectors({ onSelect }) {
                 </div>
                 <div className="p-4">
                   <h3 className="text-sm font-medium text-vh-cream leading-snug">{sector.name}</h3>
-                  <p className="mt-2 text-xs text-vh-cream/60 leading-relaxed line-clamp-3">{sector.description}</p>
+                  <p className="mt-2 text-xs text-vh-cream/60 leading-relaxed line-clamp-3">{sector.shortDescription}</p>
                   <span className="mt-3 inline-flex items-center gap-1 text-xs text-vh-green-accent group-hover:text-vh-gold transition-colors">
                     Explore <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                   </span>
                 </div>
-              </button>
+              </Link>
             );
           })}
         </div>

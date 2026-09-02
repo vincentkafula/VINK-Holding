@@ -1,40 +1,104 @@
 {
+  "company": {
+    "name": "Vink Holdings",
+    "tagline": "Building Sustainable Value Across Generations",
+    "founded": 2011,
+    "headquarters": "Lusaka, Zambia",
+    "description": "Vink Holdings is a diversified holding company headquartered in Lusaka, Zambia, with operating subsidiaries across Southern and East Africa. Since 2011 we have built and acquired businesses across real estate, financial services, agriculture, trading and distribution, energy and infrastructure, and hospitality — backed by disciplined governance and a long-term view of value creation."
+  },
+  "markets": [
+    { "code": "ZM", "country": "Zambia", "role": "Group headquarters", "since": 2011, "sectors": ["Real Estate & Development", "Financial Services", "Agriculture & Agro-Processing", "Trading & Distribution"] },
+    { "code": "ZA", "country": "South Africa", "role": "Regional financial services hub", "since": 2015, "sectors": ["Financial Services", "Trading & Distribution"] },
+    { "code": "ZW", "country": "Zimbabwe", "role": "Agro-processing and trading", "since": 2016, "sectors": ["Agriculture & Agro-Processing", "Trading & Distribution"] },
+    { "code": "MZ", "country": "Mozambique", "role": "Energy and logistics corridor", "since": 2018, "sectors": ["Energy & Infrastructure", "Trading & Distribution"] },
+    { "code": "MW", "country": "Malawi", "role": "Agriculture and hospitality", "since": 2019, "sectors": ["Agriculture & Agro-Processing", "Hospitality & Services"] },
+    { "code": "CD", "country": "DR Congo", "role": "Real estate and trading", "since": 2021, "sectors": ["Real Estate & Development", "Trading & Distribution"] },
+    { "code": "KE", "country": "Kenya", "role": "East Africa expansion base", "since": 2023, "sectors": ["Financial Services", "Hospitality & Services"] }
+  ],
   "sectors": [
     {
       "id": "real-estate",
       "name": "Real Estate & Development",
-      "description": "Creating sustainable spaces that inspire and enrich communities.",
-      "icon": "building"
+      "shortDescription": "Creating sustainable spaces that inspire and enrich communities.",
+      "description": "Vink Real Estate & Development plans, builds, and manages commercial, residential, and mixed-use assets across our operating markets. From grade-A office towers in Lusaka's Central Business District to affordable housing developments on the Copperbelt, our portfolio is built around long-term occupancy demand rather than speculative cycles. We hold assets through full-service management, not just development-and-exit, which keeps our incentives aligned with the tenants and communities we build for.",
+      "icon": "building",
+      "markets": ["Zambia", "DR Congo"],
+      "subsidiaries": ["Vink Properties Ltd", "Copperbelt Housing Developments", "Vink Facilities Management"],
+      "stats": [
+        { "label": "Developed GLA", "value": "340,000 m²" },
+        { "label": "Occupancy rate", "value": "94%" },
+        { "label": "Active developments", "value": "6" }
+      ]
     },
     {
       "id": "financial-services",
       "name": "Financial Services",
-      "description": "Delivering innovative financial solutions for individuals and businesses.",
-      "icon": "trending-up"
+      "shortDescription": "Delivering innovative financial solutions for individuals and businesses.",
+      "description": "Our financial services subsidiaries provide savings, lending, insurance, and payments infrastructure to underserved individuals and SMEs across the region. We combine traditional microfinance discipline with modern digital rails — mobile wallets, agent banking networks, and card issuing — to reach customers that conventional banks find too costly to serve, without compromising on credit quality or compliance.",
+      "icon": "trending-up",
+      "markets": ["Zambia", "South Africa", "Kenya"],
+      "subsidiaries": ["Vink Capital", "Vink Microfinance", "Vink Pay"],
+      "stats": [
+        { "label": "Active accounts", "value": "180,000+" },
+        { "label": "Loan book", "value": "$42M" },
+        { "label": "NPL ratio", "value": "3.1%" }
+      ]
     },
     {
       "id": "agriculture",
       "name": "Agriculture & Agro-Processing",
-      "description": "Producing value and promoting food security through innovation.",
-      "icon": "leaf"
+      "shortDescription": "Producing value and promoting food security through innovation.",
+      "description": "From contract farming with smallholders to large-scale commercial cultivation and processing, our agriculture businesses focus on staple crops, edible oils, and packaged foods for regional markets. We invest heavily in irrigation, storage, and processing capacity so that value — not just raw produce — stays within the countries we operate in, and we run structured outgrower programmes that give smallholder farmers reliable offtake and fair pricing.",
+      "icon": "leaf",
+      "markets": ["Zambia", "Zimbabwe", "Malawi"],
+      "subsidiaries": ["Vink AgriProcessing", "Copperbelt Grain Co.", "Vink Outgrower Programme"],
+      "stats": [
+        { "label": "Hectares under management", "value": "18,500" },
+        { "label": "Smallholder farmers supported", "value": "6,200+" },
+        { "label": "Processing capacity", "value": "120,000 MT/yr" }
+      ]
     },
     {
       "id": "trading-distribution",
       "name": "Trading & Distribution",
-      "description": "Reliable supply chains and distribution across diverse markets.",
-      "icon": "shopping-cart"
+      "shortDescription": "Reliable supply chains and distribution across diverse markets.",
+      "description": "Our trading and distribution arm moves consumer goods, agricultural inputs, and industrial products through a network of warehouses, fleet, and retail partnerships spanning seven countries. We act as the last-mile backbone for both our own subsidiaries and third-party brands entering the region, giving us density and route efficiency that standalone distributors can't match.",
+      "icon": "shopping-cart",
+      "markets": ["Zambia", "South Africa", "Zimbabwe", "Mozambique", "DR Congo"],
+      "subsidiaries": ["Vink Logistics", "Regional FMCG Distribution", "Vink Fleet Services"],
+      "stats": [
+        { "label": "Warehousing footprint", "value": "85,000 m²" },
+        { "label": "Fleet vehicles", "value": "260+" },
+        { "label": "Retail touchpoints served", "value": "4,800+" }
+      ]
     },
     {
       "id": "energy-infrastructure",
       "name": "Energy & Infrastructure",
-      "description": "Powering progress through sustainable energy and infrastructure.",
-      "icon": "zap"
+      "shortDescription": "Powering progress through sustainable energy and infrastructure.",
+      "description": "We invest in solar generation, mini-grids, and infrastructure that underpins growth in markets with unreliable grid access. Our energy projects range from commercial rooftop solar for our own real estate and agro-processing sites to independent power projects that feed surplus capacity back to national grids, alongside road and logistics infrastructure that de-risks trade corridors for the wider group.",
+      "icon": "zap",
+      "markets": ["Zambia", "Mozambique"],
+      "subsidiaries": ["Vink Solar", "Vink Infrastructure Partners"],
+      "stats": [
+        { "label": "Installed solar capacity", "value": "38 MW" },
+        { "label": "CO₂ avoided annually", "value": "24,000 tCO₂e" },
+        { "label": "Infrastructure projects delivered", "value": "14" }
+      ]
     },
     {
       "id": "hospitality",
       "name": "Hospitality & Services",
-      "description": "Delivering exceptional experiences with world-class standards.",
-      "icon": "users"
+      "shortDescription": "Delivering exceptional experiences with world-class standards.",
+      "description": "Our hospitality portfolio spans business hotels, serviced apartments, and event venues in the cities where our other businesses operate, supported by a professional services arm covering facilities, catering, and cleaning contracts for corporate clients. Hospitality gives the group a direct read on service quality standards that we then apply across every other customer-facing subsidiary.",
+      "icon": "users",
+      "markets": ["Zambia", "Malawi", "Kenya"],
+      "subsidiaries": ["Vink Hotels & Suites", "Vink Professional Services"],
+      "stats": [
+        { "label": "Rooms under management", "value": "540" },
+        { "label": "Average occupancy", "value": "68%" },
+        { "label": "Corporate service contracts", "value": "90+" }
+      ]
     }
   ],
   "stats": [
@@ -44,27 +108,128 @@
     { "id": "performance", "value": "Strong", "label": "Financial Performance", "icon": "bar-chart" },
     { "id": "presence", "value": "Regional", "label": "Presence", "icon": "map-pin" }
   ],
+  "ads": [
+    {
+      "id": 1,
+      "eyebrow": "Now Investing",
+      "title": "Vink Solar closes $12M raise for Phase II rooftop expansion",
+      "body": "Backing 38MW of installed capacity across our real estate and agro-processing sites.",
+      "cta": "Read the announcement",
+      "link": "/sustainability",
+      "theme": "gold"
+    },
+    {
+      "id": 2,
+      "eyebrow": "Now Hiring",
+      "title": "We're expanding our Financial Services team in Nairobi",
+      "body": "Vink Capital is opening a new East Africa hub — credit, risk, and product roles available.",
+      "cta": "View open roles",
+      "link": "/careers",
+      "theme": "green"
+    },
+    {
+      "id": 3,
+      "eyebrow": "Investor Update",
+      "title": "FY2025 results: strong growth across all six sectors",
+      "body": "Read the full financial performance report and management commentary.",
+      "cta": "View investor reports",
+      "link": "/investors",
+      "theme": "gold"
+    },
+    {
+      "id": 4,
+      "eyebrow": "New Market",
+      "title": "Vink Holdings enters Kenya with two new subsidiaries",
+      "body": "Extending our regional footprint into East Africa for the first time.",
+      "cta": "Explore our markets",
+      "link": "/about",
+      "theme": "green"
+    },
+    {
+      "id": 5,
+      "eyebrow": "Community Impact",
+      "title": "6,200+ smallholder farmers now in our outgrower programme",
+      "body": "Fair pricing, guaranteed offtake, and agronomy support across three countries.",
+      "cta": "See our sustainability work",
+      "link": "/sustainability",
+      "theme": "gold"
+    }
+  ],
+  "leadership": [
+    { "id": 1, "name": "M. Chanda Sakala", "role": "Group Chief Executive Officer", "bio": "Over 20 years leading diversified operating groups across Southern Africa, with a background in banking and infrastructure finance." },
+    { "id": 2, "name": "Grace N. Mwansa", "role": "Group Chief Financial Officer", "bio": "Chartered accountant with prior experience in private equity portfolio oversight across East and Southern Africa." },
+    { "id": 3, "name": "Patrick O. Banda", "role": "Chief Operating Officer", "bio": "Responsible for operational performance across all six sectors and the group's regional expansion programme." },
+    { "id": 4, "name": "Linda K. Phiri", "role": "Group Head of Sustainability", "bio": "Leads environmental and social governance across the portfolio, including the renewable energy and outgrower programmes." }
+  ],
+  "governance": [
+    "Independent board majority with sector-specific advisory committees",
+    "Group-wide risk and audit function reporting directly to the board",
+    "Annual third-party assurance on financial statements across all subsidiaries",
+    "Group ESG policy applied uniformly across all operating markets"
+  ],
+  "sustainability": {
+    "pillars": [
+      { "title": "Renewable Energy", "body": "38MW of installed solar capacity across our own operations, avoiding an estimated 24,000 tonnes of CO₂e annually, with Phase II expansion underway." },
+      { "title": "Responsible Agriculture", "body": "Outgrower programmes supporting 6,200+ smallholder farmers with agronomy training, guaranteed offtake, and fair pricing across three countries." },
+      { "title": "Community Investment", "body": "Group-wide CSR spend directed toward education, enterprise development, and local job creation in every market we operate in." },
+      { "title": "Governance & Compliance", "body": "Independent board oversight, group-wide ESG policy, and third-party financial assurance applied consistently across all subsidiaries." }
+    ]
+  },
+  "jobs": [
+    { "id": 1, "title": "Credit Risk Analyst", "department": "Financial Services", "location": "Lusaka, Zambia", "type": "Full-time", "description": "Support credit decisioning and portfolio monitoring for Vink Capital's SME lending book." },
+    { "id": 2, "title": "Regional Agronomist", "department": "Agriculture & Agro-Processing", "location": "Lilongwe, Malawi", "type": "Full-time", "description": "Provide technical support to outgrower farmers across the Malawi programme, including training and yield monitoring." },
+    { "id": 3, "title": "Solar Project Engineer", "department": "Energy & Infrastructure", "location": "Maputo, Mozambique", "type": "Full-time", "description": "Lead engineering delivery on Phase II rooftop and mini-grid solar installations." },
+    { "id": 4, "title": "Business Development Manager", "department": "Financial Services", "location": "Nairobi, Kenya", "type": "Full-time", "description": "Build Vink Capital's new East Africa client pipeline across SME and retail lending products." },
+    { "id": 5, "title": "Property Manager", "department": "Real Estate & Development", "location": "Lusaka, Zambia", "type": "Full-time", "description": "Manage tenant relationships and facilities operations across the Lusaka commercial portfolio." },
+    { "id": 6, "title": "Group Sustainability Analyst", "department": "Corporate", "location": "Lusaka, Zambia", "type": "Full-time", "description": "Support ESG reporting and data collection across all six sectors and seven markets." }
+  ],
+  "investorReports": [
+    { "id": 1, "title": "FY2025 Annual Report", "type": "Annual Report", "date": "2026-03-15" },
+    { "id": 2, "title": "H1 2026 Interim Results", "type": "Interim Results", "date": "2026-08-10" },
+    { "id": 3, "title": "FY2024 Annual Report", "type": "Annual Report", "date": "2025-03-20" },
+    { "id": 4, "title": "Group ESG & Sustainability Report 2025", "type": "ESG Report", "date": "2025-11-05" },
+    { "id": 5, "title": "Q3 2026 Trading Update", "type": "Trading Update", "date": "2026-10-01" }
+  ],
   "news": [
     {
       "id": 1,
       "category": "Corporate",
       "title": "Vink Holdings Reports Strong Growth in 2024 Financial Year",
       "date": "2025-05-20",
-      "excerpt": "Vink Holdings closed the 2024 financial year with strong growth across its diversified portfolio, driven by disciplined execution across all six business sectors and continued expansion of subsidiary operations throughout the region."
+      "excerpt": "Vink Holdings closed the 2024 financial year with strong growth across its diversified portfolio, driven by disciplined execution across all six business sectors and continued expansion of subsidiary operations throughout the region.",
+      "body": "Vink Holdings closed the 2024 financial year with strong growth across its diversified portfolio, driven by disciplined execution across all six business sectors and continued expansion of subsidiary operations throughout the region.\n\nGroup revenue grew on the back of expanded lending activity in Financial Services, higher occupancy across the Real Estate & Development portfolio, and increased processing volumes in Agriculture & Agro-Processing. Trading & Distribution benefited from new distribution contracts secured in Mozambique and the Democratic Republic of Congo.\n\nManagement reiterated the group's long-term capital allocation discipline, noting that growth was achieved without a material increase in group leverage. The board has approved continued investment in the group's Energy & Infrastructure sector, including Phase II of the Vink Solar rooftop expansion programme.\n\nThe full FY2025 Annual Report is available to shareholders and analysts via the Investors section."
     },
     {
       "id": 2,
       "category": "Sustainability",
       "title": "Investing in a Greener Tomorrow Through Renewable Energy",
       "date": "2025-05-12",
-      "excerpt": "As part of its long-term sustainability commitments, Vink Holdings is expanding its investment in renewable energy infrastructure, supporting the group's Energy & Infrastructure sector and reducing the environmental footprint of its operations."
+      "excerpt": "As part of its long-term sustainability commitments, Vink Holdings is expanding its investment in renewable energy infrastructure, supporting the group's Energy & Infrastructure sector and reducing the environmental footprint of its operations.",
+      "body": "As part of its long-term sustainability commitments, Vink Holdings is expanding its investment in renewable energy infrastructure, supporting the group's Energy & Infrastructure sector and reducing the environmental footprint of its operations.\n\nThe group's installed solar capacity now stands at 38MW across rooftop and mini-grid installations in Zambia and Mozambique, avoiding an estimated 24,000 tonnes of CO₂e annually. Phase II of the expansion programme, backed by a recently closed $12M raise, will add rooftop capacity across additional real estate and agro-processing sites.\n\n\"Energy reliability is a precondition for almost everything else we do as a group,\" said Group Head of Sustainability Linda K. Phiri. \"Investing in our own generation capacity reduces cost and risk across every other sector we operate in.\"\n\nThe programme is one of several initiatives outlined in the group's most recent ESG & Sustainability Report."
     },
     {
       "id": 3,
       "category": "Community",
       "title": "Empowering Communities, Transforming Lives",
       "date": "2025-04-28",
-      "excerpt": "Through its corporate social responsibility programmes, Vink Holdings continues to invest in the communities where it operates, focusing on education, enterprise development, and local job creation."
+      "excerpt": "Through its corporate social responsibility programmes, Vink Holdings continues to invest in the communities where it operates, focusing on education, enterprise development, and local job creation.",
+      "body": "Through its corporate social responsibility programmes, Vink Holdings continues to invest in the communities where it operates, focusing on education, enterprise development, and local job creation.\n\nThe group's outgrower programme now supports more than 6,200 smallholder farmers across Zambia, Zimbabwe, and Malawi, providing agronomy training, guaranteed offtake, and fair pricing. Beyond agriculture, group subsidiaries have funded scholarships, supported local vocational training centres, and prioritised local hiring across every market of operation.\n\n\"Our approach to community investment mirrors our approach to business — long-term, structured, and measured,\" said Group CEO M. Chanda Sakala. \"We're not interested in one-off donations; we want programmes our subsidiaries still run in ten years.\"\n\nCommunity investment activities are coordinated centrally but delivered locally by each subsidiary's operating team."
+    },
+    {
+      "id": 4,
+      "category": "Corporate",
+      "title": "Vink Holdings Enters Kenya, Marking First East Africa Expansion",
+      "date": "2026-02-18",
+      "excerpt": "The group has established two new subsidiaries in Nairobi, extending its regional footprint into East Africa for the first time and opening a new hub for Financial Services and Hospitality.",
+      "body": "The group has established two new subsidiaries in Nairobi, extending its regional footprint into East Africa for the first time and opening a new hub for Financial Services and Hospitality.\n\nThe Kenya entry follows two years of due diligence and regulatory engagement, and positions Nairobi as the group's East Africa base for future expansion. Vink Capital will offer SME and retail lending products, while the Hospitality & Services sector will manage a portfolio of serviced apartments targeting the city's growing corporate travel market.\n\n\"Kenya gives us a credible platform to serve East Africa the way we've served Southern Africa for over a decade,\" said COO Patrick O. Banda. The group is currently hiring across both new subsidiaries, with open roles listed on the Careers page."
+    },
+    {
+      "id": 5,
+      "category": "Sustainability",
+      "title": "Group ESG & Sustainability Report 2025 Published",
+      "date": "2025-11-05",
+      "excerpt": "Vink Holdings has published its most comprehensive sustainability report to date, covering renewable energy, responsible agriculture, community investment, and governance across all operating markets.",
+      "body": "Vink Holdings has published its most comprehensive sustainability report to date, covering renewable energy, responsible agriculture, community investment, and governance across all operating markets.\n\nThe report details progress against the group's four sustainability pillars — renewable energy, responsible agriculture, community investment, and governance and compliance — with market-by-market data for the first time, reflecting the group's expanded footprint across seven countries.\n\nThe report is available for download via the Investors section alongside the group's financial disclosures."
     }
   ]
 }

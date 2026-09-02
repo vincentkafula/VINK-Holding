@@ -9,6 +9,7 @@ const DATA_DIR = path.join(__dirname, "data");
 const CONTENT_PATH = path.join(DATA_DIR, "content.json");
 const SUBSCRIBERS_PATH = path.join(DATA_DIR, "subscribers.json");
 const MESSAGES_PATH = path.join(DATA_DIR, "messages.json");
+const APPLICATIONS_PATH = path.join(DATA_DIR, "applications.json");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -35,12 +36,98 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", service: "vink-holdings-api", time: new Date().toISOString() });
 });
 
+app.get("/api/company", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    res.json(content.company);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load company profile." });
+  }
+});
+
 app.get("/api/sectors", async (req, res) => {
   try {
     const content = await readJSON(CONTENT_PATH);
     res.json(content.sectors);
   } catch (err) {
     res.status(500).json({ error: "Unable to load business sectors." });
+  }
+});
+
+app.get("/api/sectors/:id", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    const sector = content.sectors.find((s) => s.id === req.params.id);
+    if (!sector) return res.status(404).json({ error: "Sector not found." });
+    res.json(sector);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load sector." });
+  }
+});
+
+app.get("/api/markets", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    res.json(content.markets);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load markets." });
+  }
+});
+
+app.get("/api/ads", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    res.json(content.ads);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load promotions." });
+  }
+});
+
+app.get("/api/leadership", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    res.json({ leadership: content.leadership, governance: content.governance });
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load leadership." });
+  }
+});
+
+app.get("/api/sustainability", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    res.json(content.sustainability);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load sustainability content." });
+  }
+});
+
+app.get("/api/jobs", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    res.json(content.jobs);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load open roles." });
+  }
+});
+
+app.get("/api/jobs/:id", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    const job = content.jobs.find((j) => String(j.id) === req.params.id);
+    if (!job) return res.status(404).json({ error: "Role not found." });
+    res.json(job);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load role." });
+  }
+});
+
+app.get("/api/investor-reports", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    const sorted = [...content.investorReports].sort((a, b) => new Date(b.date) - new Date(a.date));
+    res.json(sorted);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load investor reports." });
   }
 });
 
@@ -132,6 +219,54 @@ app.post("/api/contact", async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ error: "Something went wrong. Please try again." });
+  }
+});
+
+// --- job applications ---------------------------------------------------
+
+app.post("/api/careers/apply", async (req, res) => {
+  try {
+    const { jobId, jobTitle, name, email, phone, coverNote } = req.body || {};
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: "Please enter your name." });
+    }
+    if (!email || !emailRegex.test(email.trim())) {
+      return res.status(400).json({ error: "Please enter a valid email address." });
+    }
+    if (!jobTitle || !jobTitle.trim()) {
+      return res.status(400).json({ error: "Please specify which role you're applying for." });
+    }
+
+    const applications = await readJSON(APPLICATIONS_PATH);
+    const entry = {
+      id: applications.length ? applications[applications.length - 1].id + 1 : 1,
+      jobId: jobId || null,
+      jobTitle: jobTitle.trim(),
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      phone: phone ? phone.trim() : null,
+      coverNote: coverNote ? coverNote.trim() : null,
+      submittedAt: new Date().toISOString(),
+    };
+    applications.push(entry);
+    await writeJSON(APPLICATIONS_PATH, applications);
+
+    res.status(201).json({
+      message: `Thank you for applying for ${entry.jobTitle}. Our talent team will be in touch if there's a fit.`,
+      reference: `VH-APP-${entry.id.toString().padStart(5, "0")}`,
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Something went wrong. Please try again." });
+  }
+});
+
+app.get("/api/careers/applications", async (req, res) => {
+  try {
+    const applications = await readJSON(APPLICATIONS_PATH);
+    res.json(applications);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to load applications." });
   }
 });
 

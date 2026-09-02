@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Play } from "lucide-react";
+import InfoModal from "./InfoModal.jsx";
 
 const SLIDES = [
   {
@@ -24,8 +26,9 @@ const SLIDES = [
   },
 ];
 
-export default function Hero({ onWatchVideo }) {
+export default function Hero() {
   const [active, setActive] = useState(0);
+  const [videoOpen, setVideoOpen] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -122,18 +125,14 @@ export default function Hero({ onWatchVideo }) {
         <p className="mt-6 max-w-md text-vh-cream/75 text-base leading-relaxed">{slide.body}</p>
 
         <div className="mt-9 flex flex-wrap items-center gap-4">
-          <a
-            href="#about"
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
-            }}
+          <Link
+            to="/about"
             className="rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
           >
             About Vink Holdings →
-          </a>
+          </Link>
           <button
-            onClick={onWatchVideo}
+            onClick={() => setVideoOpen(true)}
             className="flex items-center gap-2 rounded-sm border border-vh-cream/30 px-6 py-3 text-sm font-medium text-vh-cream hover:border-vh-gold hover:text-vh-gold transition-colors"
           >
             <Play size={16} /> Watch Corporate Video
@@ -153,6 +152,12 @@ export default function Hero({ onWatchVideo }) {
           ))}
         </div>
       </div>
+
+      <InfoModal open={videoOpen} onClose={() => setVideoOpen(false)} title="Vink Holdings Corporate Video">
+        <div className="aspect-video rounded-sm bg-vh-black/60 border border-vh-line flex items-center justify-center text-vh-cream/50 text-xs">
+          Corporate video coming soon.
+        </div>
+      </InfoModal>
     </section>
   );
 }

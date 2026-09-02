@@ -8,35 +8,32 @@ async function handle(res) {
   return data;
 }
 
-export async function getSectors() {
-  const res = await fetch(`${BASE}/sectors`);
-  return handle(res);
+function get(path) {
+  return fetch(`${BASE}${path}`).then(handle);
 }
 
-export async function getStats() {
-  const res = await fetch(`${BASE}/stats`);
-  return handle(res);
-}
-
-export async function getNews() {
-  const res = await fetch(`${BASE}/news`);
-  return handle(res);
-}
-
-export async function subscribeNewsletter(email) {
-  const res = await fetch(`${BASE}/newsletter`, {
+function post(path, body) {
+  return fetch(`${BASE}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  });
-  return handle(res);
+    body: JSON.stringify(body),
+  }).then(handle);
 }
 
-export async function submitContact(payload) {
-  const res = await fetch(`${BASE}/contact`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  return handle(res);
-}
+export const getCompany = () => get("/company");
+export const getSectors = () => get("/sectors");
+export const getSector = (id) => get(`/sectors/${id}`);
+export const getMarkets = () => get("/markets");
+export const getStats = () => get("/stats");
+export const getAds = () => get("/ads");
+export const getLeadership = () => get("/leadership");
+export const getSustainability = () => get("/sustainability");
+export const getJobs = () => get("/jobs");
+export const getJob = (id) => get(`/jobs/${id}`);
+export const getInvestorReports = () => get("/investor-reports");
+export const getNews = () => get("/news");
+export const getArticle = (id) => get(`/news/${id}`);
+
+export const subscribeNewsletter = (email) => post("/newsletter", { email });
+export const submitContact = (payload) => post("/contact", payload);
+export const submitApplication = (payload) => post("/careers/apply", payload);

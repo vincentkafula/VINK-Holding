@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import { CheckCircle2 } from "lucide-react";
 
 const POINTS = ["Strong Governance", "Innovation Driven", "Sustainable Growth", "People Focused"];
 
-export default function WhyPartner({ onLearnMore }) {
+export default function WhyPartner() {
   return (
     <section id="about" className="px-6 lg:px-8 py-24 max-w-7xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
@@ -27,12 +28,12 @@ export default function WhyPartner({ onLearnMore }) {
             ))}
           </div>
 
-          <button
-            onClick={onLearnMore}
-            className="mt-9 rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+          <Link
+            to="/about"
+            className="mt-9 inline-block rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
           >
             Learn More About Us →
-          </button>
+          </Link>
         </div>
 
         <div className="relative rounded-sm overflow-hidden border border-vh-line h-80 lg:h-[420px]">

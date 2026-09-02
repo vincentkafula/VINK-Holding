@@ -13,18 +13,21 @@ vink-holdings/
 
 ## What's functional (not just decorative)
 
+- **Multi-page navigation** — Home, About, Our Businesses (+ per-sector detail
+  pages), Investors, Sustainability, Careers, News (+ per-article detail
+  pages), and Contact are all real routes (React Router), not anchor scrolls.
+  Every header, footer, and in-page link points to a working route.
+- **Sliding adverts carousel** — an auto-rotating, clickable promo strip
+  (`/api/ads`) on every major page, with arrows and dots.
 - **Newsletter signup** (footer) — validates the email, persists it to
-  `backend/data/subscribers.json`, and shows a real success/error message.
-- **Contact form** (Contact Us button/modal) — validates required fields,
-  persists submissions to `backend/data/messages.json`, and returns a
-  reference number (e.g. `VH-00004`).
-- **Business sectors, stats, and news** are all served from the backend
-  (`/api/sectors`, `/api/stats`, `/api/news`) rather than hardcoded in the
-  frontend, so editing `backend/data/content.json` updates the site.
-- **Navigation** scrolls to real sections, highlights the active section,
-  and has a working mobile menu.
-- **Hero carousel** auto-rotates and responds to dot clicks.
-- Sector cards and news cards open detail modals.
+  `backend/data/subscribers.json`.
+- **Contact form** — a full page at `/contact` (plus reusable component),
+  persists to `backend/data/messages.json`, returns a reference number.
+- **Careers** — real job listings filterable by department, with a working
+  "Apply Now" form that persists to `backend/data/applications.json`.
+- **News** — filterable by category, with full article detail pages.
+- Sectors, markets, leadership, governance, sustainability pillars, and
+  investor reports are all served from the backend rather than hardcoded.
 
 ## Running locally
 

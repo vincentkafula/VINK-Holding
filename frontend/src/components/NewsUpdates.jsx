@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { getNews } from "../api.js";
 
@@ -14,7 +15,7 @@ function formatDate(iso) {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-export default function NewsUpdates({ onReadMore, onViewAll }) {
+export default function NewsUpdates({ limit = 3 }) {
   const [news, setNews] = useState([]);
   const [status, setStatus] = useState("loading");
 
@@ -27,18 +28,20 @@ export default function NewsUpdates({ onReadMore, onViewAll }) {
       .catch(() => setStatus("error"));
   }, []);
 
+  const items = limit ? news.slice(0, limit) : news;
+
   return (
     <section id="news" className="px-6 lg:px-8 py-20 max-w-7xl mx-auto">
       <div className="flex items-center gap-4 mb-10">
         <div className="h-px flex-1 bg-vh-line" />
         <h2 className="text-xs tracking-[0.2em] text-vh-gold whitespace-nowrap">NEWS &amp; UPDATES</h2>
         <div className="h-px flex-1 bg-vh-line" />
-        <button
-          onClick={onViewAll}
+        <Link
+          to="/news"
           className="text-xs text-vh-gold hover:text-vh-gold-light whitespace-nowrap flex items-center gap-1 shrink-0"
         >
           View All News <ArrowRight size={12} />
-        </button>
+        </Link>
       </div>
 
       {status === "loading" && (
@@ -51,7 +54,7 @@ export default function NewsUpdates({ onReadMore, onViewAll }) {
 
       {status === "ready" && (
         <div className="grid md:grid-cols-3 gap-6">
-          {news.map((item, i) => (
+          {items.map((item, i) => (
             <article
               key={item.id}
               className="rounded-sm border border-vh-line bg-vh-forest-card overflow-hidden hover:border-vh-gold/50 transition-colors"
@@ -73,9 +76,9 @@ export default function NewsUpdates({ onReadMore, onViewAll }) {
                 <div className="mt-4 flex items-center gap-2 text-xs text-vh-cream/50">
                   <span>{formatDate(item.date)}</span>
                   <span>•</span>
-                  <button onClick={() => onReadMore(item)} className="text-vh-gold hover:text-vh-gold-light">
+                  <Link to={`/news/${item.id}`} className="text-vh-gold hover:text-vh-gold-light">
                     Read More →
-                  </button>
+                  </Link>
                 </div>
               </div>
             </article>
