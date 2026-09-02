@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { getNews } from "../api.js";
+import NewsArt from "./NewsArt.jsx";
 
 const CATEGORY_COLORS = {
   Corporate: "bg-vh-green-accent",
   Sustainability: "bg-[#b5622f]",
   Community: "bg-vh-green-accent",
 };
-
-const CARD_HUES = ["#182a2c", "#22301a", "#241c2e"];
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -60,9 +59,9 @@ export default function NewsUpdates({ limit = 3 }) {
               className="rounded-sm border border-vh-line bg-vh-forest-card overflow-hidden hover:border-vh-gold/50 transition-colors"
             >
               <div
-                className="h-40 relative"
-                style={{ background: `linear-gradient(135deg, ${CARD_HUES[i % 3]}, #0e2118)` }}
+                className="h-40 relative overflow-hidden"
               >
+                <NewsArt category={item.category} />
                 <span
                   className={`absolute top-3 left-3 text-[10px] tracking-wide font-medium text-white px-2.5 py-1 rounded-sm ${
                     CATEGORY_COLORS[item.category] || "bg-vh-green-accent"

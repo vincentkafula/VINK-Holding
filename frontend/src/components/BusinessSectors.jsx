@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Building2, TrendingUp, Leaf, ShoppingCart, Zap, Users, ArrowRight } from "lucide-react";
 import { getSectors } from "../api.js";
+import SectorArt from "./SectorArt.jsx";
 
 const ICONS = {
   building: Building2,
@@ -12,7 +13,6 @@ const ICONS = {
   users: Users,
 };
 
-const FALLBACK_IMAGE_HUES = ["#1d3324", "#1a2b3d", "#2c3018", "#1d2530", "#3d2f14", "#182a2c"];
 const ICON_BG = ["bg-vh-gold", "bg-vh-green-accent", "bg-vh-gold", "bg-vh-green-accent", "bg-vh-gold", "bg-vh-green-accent"];
 
 export default function BusinessSectors() {
@@ -60,10 +60,8 @@ export default function BusinessSectors() {
                 to={`/businesses/${sector.id}`}
                 className="group text-left rounded-sm border border-vh-line bg-vh-forest-card overflow-hidden hover:border-vh-gold/60 transition-colors block"
               >
-                <div
-                  className="h-28 relative flex items-center justify-center"
-                  style={{ background: `linear-gradient(135deg, ${FALLBACK_IMAGE_HUES[i % 6]}, #0e2118)` }}
-                >
+                <div className="h-28 relative flex items-center justify-center overflow-hidden">
+                  <SectorArt icon={sector.icon} />
                   <div className={`absolute top-2 left-2 w-9 h-9 rounded-full ${ICON_BG[i % 6]} flex items-center justify-center`}>
                     <Icon size={17} className="text-vh-black" />
                   </div>

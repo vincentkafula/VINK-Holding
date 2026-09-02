@@ -59,6 +59,9 @@ export default function Header() {
           <span className="leading-tight">
             <span className="block font-display text-lg tracking-wide text-vh-cream">VINK</span>
             <span className="block text-[10px] tracking-[0.25em] text-vh-gold -mt-1">HOLDINGS</span>
+            <span className="hidden sm:block text-[8px] tracking-[0.12em] text-vh-cream/40 mt-0.5">
+              BUILDING VALUE. EMPOWERING FUTURES.
+            </span>
           </span>
         </Link>
 

@@ -66,7 +66,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-xs text-vh-cream/60 leading-relaxed max-w-[220px]">
-              Building sustainable value across generations through diverse businesses and strategic investments in seven African markets.
+              Building value. Empowering futures. Sustainable value across generations through diverse businesses in seven African markets.
             </p>
             <div className="mt-5 flex items-center gap-3">
               {[LinkedinIcon, TwitterIcon, FacebookIcon, YoutubeIcon].map((Icon, i) => (

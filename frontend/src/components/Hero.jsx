@@ -45,41 +45,51 @@ export default function Hero() {
       <div className="absolute inset-0">
         <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" className="w-full h-full">
           <defs>
-            <linearGradient id="skyGrad" x1="0" y1="0" x2="0.85" y2="1">
-              <stop offset="0%" stopColor="#e8934f" />
-              <stop offset="22%" stopColor="#c9713f" />
-              <stop offset="45%" stopColor="#6b4632" />
-              <stop offset="70%" stopColor="#233524" />
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0.7" y2="1">
+              <stop offset="0%" stopColor="#3a4a5c" />
+              <stop offset="20%" stopColor="#8a6b52" />
+              <stop offset="38%" stopColor="#e0975a" />
+              <stop offset="55%" stopColor="#c97d4a" />
+              <stop offset="75%" stopColor="#4a3a2c" />
               <stop offset="100%" stopColor="#0a1710" />
             </linearGradient>
             <linearGradient id="fadeLeft" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#0a1710" stopOpacity="1" />
               <stop offset="42%" stopColor="#0a1710" stopOpacity="0.94" />
-              <stop offset="70%" stopColor="#0a1710" stopOpacity="0.35" />
+              <stop offset="70%" stopColor="#0a1710" stopOpacity="0.3" />
               <stop offset="100%" stopColor="#0a1710" stopOpacity="0" />
             </linearGradient>
-            <radialGradient id="sunGlow" cx="72%" cy="18%" r="45%">
-              <stop offset="0%" stopColor="#f5b56a" stopOpacity="0.85" />
+            <radialGradient id="sunGlow" cx="70%" cy="46%" r="30%">
+              <stop offset="0%" stopColor="#ffd9a0" stopOpacity="0.9" />
+              <stop offset="45%" stopColor="#f5b56a" stopOpacity="0.4" />
               <stop offset="100%" stopColor="#f5b56a" stopOpacity="0" />
             </radialGradient>
             <linearGradient id="waterFade" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#0a1710" stopOpacity="0" />
               <stop offset="100%" stopColor="#0a1710" stopOpacity="1" />
             </linearGradient>
+            <linearGradient id="towerFace" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#16281d" />
+              <stop offset="100%" stopColor="#0c1a12" />
+            </linearGradient>
           </defs>
 
           <rect width="1440" height="800" fill="url(#skyGrad)" />
           <rect width="1440" height="800" fill="url(#sunGlow)" />
+
+          {/* soft cloud bands */}
+          <ellipse cx="780" cy="140" rx="220" ry="16" fill="#f0d9c0" opacity="0.12" />
+          <ellipse cx="1000" cy="100" rx="180" ry="12" fill="#f0d9c0" opacity="0.1" />
 
           {/* far skyline, low contrast */}
           {Array.from({ length: 20 }).map((_, i) => {
             const x = 480 + i * 52 + (i % 5) * 6;
             const w = 20 + (i % 3) * 6;
             const h = 90 + ((i * 41) % 160);
-            return <rect key={`f-${i}`} x={x} y={640 - h} width={w} height={h} fill="#2c2f3a" opacity="0.5" />;
+            return <rect key={`f-${i}`} x={x} y={640 - h} width={w} height={h} fill="#2c2f3a" opacity="0.45" />;
           })}
 
-          {/* main skyline, varied heights, taller central towers */}
+          {/* main skyline with window grids */}
           {[
             { x: 560, w: 34, h: 260 }, { x: 604, w: 46, h: 400 }, { x: 660, w: 30, h: 220 },
             { x: 700, w: 54, h: 460 }, { x: 764, w: 26, h: 200 }, { x: 800, w: 40, h: 340 },
@@ -87,24 +97,31 @@ export default function Hero() {
             { x: 1016, w: 28, h: 210 }, { x: 1054, w: 50, h: 420 }, { x: 1114, w: 34, h: 280 },
             { x: 1158, w: 42, h: 350 }, { x: 1210, w: 30, h: 230 }, { x: 1250, w: 46, h: 390 },
             { x: 1306, w: 32, h: 260 }, { x: 1348, w: 38, h: 310 }, { x: 1396, w: 28, h: 220 },
-          ].map((b, i) => (
-            <rect key={`m-${i}`} x={b.x} y={640 - b.h} width={b.w} height={b.h} fill={i % 2 === 0 ? "#0f1f18" : "#16281d"} />
-          ))}
-
-          {/* lit windows scattered across towers */}
-          {Array.from({ length: 220 }).map((_, i) => {
-            const x = 560 + ((i * 37) % 850);
-            const y = 220 + ((i * 53) % 400);
+          ].map((b, i) => {
+            const cols = Math.max(2, Math.floor(b.w / 8));
+            const rows = Math.max(3, Math.floor(b.h / 16));
             return (
-              <rect
-                key={`w-${i}`}
-                x={x}
-                y={y}
-                width="3.5"
-                height="5"
-                fill="#f4d99a"
-                opacity={0.2 + ((i * 17) % 55) / 100}
-              />
+              <g key={`m-${i}`}>
+                <rect x={b.x} y={640 - b.h} width={b.w} height={b.h} fill="url(#towerFace)" />
+                {Array.from({ length: rows }).map((_, r) =>
+                  Array.from({ length: cols }).map((_, c) => {
+                    const wx = b.x + 2 + c * (b.w / cols);
+                    const wy = 640 - b.h + 6 + r * (b.h / rows);
+                    const lit = (i * 7 + r * 3 + c) % 5 === 0;
+                    return (
+                      <rect
+                        key={`${r}-${c}`}
+                        x={wx}
+                        y={wy}
+                        width={Math.max(2, b.w / cols - 3)}
+                        height={Math.max(2, b.h / rows - 4)}
+                        fill={lit ? "#f4d99a" : "#1c3226"}
+                        opacity={lit ? 0.85 : 0.7}
+                      />
+                    );
+                  })
+                )}
+              </g>
             );
           })}
 
