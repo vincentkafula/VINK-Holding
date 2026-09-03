@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Send, ArrowUp, Loader2 } from "lucide-react";
-import LogoMark from "./Logo.jsx";
 import { LinkedinIcon, TwitterIcon, FacebookIcon, YoutubeIcon } from "./SocialIcons.jsx";
 import { subscribeNewsletter } from "../api.js";
 
@@ -59,7 +58,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-3">
-              <LogoMark size={40} />
+              <img src="/logo.png" alt="Vink Holdings" className="h-10 w-auto" />
               <span className="leading-tight">
                 <span className="block font-display text-base text-vh-cream">VINK</span>
                 <span className="block text-[10px] tracking-[0.25em] text-vh-gold -mt-1">HOLDINGS</span>
