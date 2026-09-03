@@ -4,7 +4,7 @@ import { FileText, Download } from "lucide-react";
 import PageBanner from "../components/PageBanner.jsx";
 import SlidingAdverts from "../components/SlidingAdverts.jsx";
 import StatsBar from "../components/StatsBar.jsx";
-import { getInvestorReports } from "../api.js";
+import { getInvestorReports, investorReportDownloadUrl } from "../api.js";
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
@@ -61,13 +61,10 @@ export default function Investors() {
         {status === "ready" && (
           <div className="divide-y divide-vh-line border border-vh-line rounded-sm overflow-hidden">
             {reports.map((r) => (
-              <button
+              <a
                 key={r.id}
-                onClick={() =>
-                  window.alert(
-                    `${r.title}\n\nThis is a demo build — in production this would download the PDF from secure investor storage.`
-                  )
-                }
+                href={investorReportDownloadUrl(r.id)}
+                download
                 className="w-full flex items-center justify-between gap-4 px-5 py-4 bg-vh-forest-card hover:bg-vh-forest-light transition-colors text-left"
               >
                 <div className="flex items-center gap-3 min-w-0">
@@ -82,7 +79,7 @@ export default function Investors() {
                 <span className="shrink-0 flex items-center gap-1.5 text-xs text-vh-gold">
                   <Download size={13} /> Download
                 </span>
-              </button>
+              </a>
             ))}
           </div>
         )}

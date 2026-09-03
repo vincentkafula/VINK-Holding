@@ -1,20 +1,47 @@
 import express from "express";
 import cors from "cors";
 import fs from "fs/promises";
+import fsSync from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import PDFDocument from "pdfkit";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.join(__dirname, "data");
-const CONTENT_PATH = path.join(DATA_DIR, "content.json");
-const SUBSCRIBERS_PATH = path.join(DATA_DIR, "subscribers.json");
-const MESSAGES_PATH = path.join(DATA_DIR, "messages.json");
-const APPLICATIONS_PATH = path.join(DATA_DIR, "applications.json");
+
+// Reference content (sectors, news, jobs, etc.) ships with the code — read-only.
+const CONTENT_DIR = path.join(__dirname, "data");
+const CONTENT_PATH = path.join(CONTENT_DIR, "content.json");
+
+// User-submitted data (newsletter, contact, applications) needs to survive
+// redeploys, so it's written to a separate, writable directory. On Railway,
+// set DATA_DIR to a mounted volume path (e.g. /data) so this data isn't lost
+// every time the service redeploys — without a volume, Railway's filesystem
+// is ephemeral and this directory resets on every deploy. Falls back to the
+// local data/ folder for development, where persistence isn't a concern.
+const WRITABLE_DIR = process.env.DATA_DIR || CONTENT_DIR;
+const SUBSCRIBERS_PATH = path.join(WRITABLE_DIR, "subscribers.json");
+const MESSAGES_PATH = path.join(WRITABLE_DIR, "messages.json");
+const APPLICATIONS_PATH = path.join(WRITABLE_DIR, "applications.json");
+
+// Ensure the writable directory and its files exist before anything tries to
+// read them — critical on first boot against a fresh, empty volume.
+if (!fsSync.existsSync(WRITABLE_DIR)) {
+  fsSync.mkdirSync(WRITABLE_DIR, { recursive: true });
+}
+for (const filePath of [SUBSCRIBERS_PATH, MESSAGES_PATH, APPLICATIONS_PATH]) {
+  if (!fsSync.existsSync(filePath)) {
+    fsSync.writeFileSync(filePath, "[]", "utf-8");
+  }
+}
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+// In production, restrict CORS to the deployed frontend origin via
+// FRONTEND_URL. Without it set (local dev), allow any origin so the Vite
+// dev server and direct API testing both work.
+const allowedOrigin = process.env.FRONTEND_URL || true;
+app.use(cors({ origin: allowedOrigin }));
 app.use(express.json());
 
 // --- helpers -------------------------------------------------------------
@@ -128,6 +155,58 @@ app.get("/api/investor-reports", async (req, res) => {
     res.json(sorted);
   } catch (err) {
     res.status(500).json({ error: "Unable to load investor reports." });
+  }
+});
+
+app.get("/api/investor-reports/:id/download", async (req, res) => {
+  try {
+    const content = await readJSON(CONTENT_PATH);
+    const report = content.investorReports.find((r) => String(r.id) === req.params.id);
+    if (!report) return res.status(404).json({ error: "Report not found." });
+
+    const filename = `${report.title.replace(/[^a-z0-9]+/gi, "-")}.pdf`;
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+
+    const doc = new PDFDocument({ size: "A4", margin: 56 });
+    doc.pipe(res);
+
+    const gold = "#b8863f";
+    const dark = "#1a1a1a";
+
+    doc.fillColor(gold).fontSize(10).font("Helvetica-Bold").text("VINK HOLDINGS", { characterSpacing: 2 });
+    doc.moveDown(1.2);
+    doc.fillColor(dark).fontSize(22).font("Helvetica-Bold").text(report.title);
+    doc.moveDown(0.3);
+    doc.fillColor("#666").fontSize(11).font("Helvetica").text(
+      `${report.type} · Published ${new Date(report.date).toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })}`
+    );
+    doc.moveDown(1.5);
+    doc.strokeColor(gold).lineWidth(1).moveTo(56, doc.y).lineTo(539, doc.y).stroke();
+    doc.moveDown(1.5);
+
+    doc.fillColor(dark).fontSize(11).font("Helvetica").text(
+      `${content.company.description}\n\n` +
+        `This document is a placeholder export generated on request from the Investors section of ` +
+        `vinkholdings.com. It stands in for the group's real ${report.type.toLowerCase()} until final financial ` +
+        `statements are published and this endpoint is wired to the group's actual disclosure documents.\n\n` +
+        `For the group's current financial performance, headline stats, and sector-level detail, see the ` +
+        `Investors and Our Businesses sections of the site.`,
+      { align: "left", lineGap: 4 }
+    );
+
+    doc.moveDown(2);
+    doc.fillColor("#999").fontSize(9).text(
+      `Generated ${new Date().toLocaleString("en-US")} · Vink Holdings, Stand No. 1234, Independence Ave, Lusaka, Zambia`
+    );
+
+    doc.end();
+  } catch (err) {
+    res.status(500).json({ error: "Unable to generate report." });
   }
 });
 

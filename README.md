@@ -26,6 +26,8 @@ vink-holdings/
 - **Careers** — real job listings filterable by department, with a working
   "Apply Now" form that persists to `backend/data/applications.json`.
 - **News** — filterable by category, with full article detail pages.
+- **Investor report downloads** — each report in the Investors section is a real,
+  server-generated PDF (`GET /api/investor-reports/:id/download`), not a placeholder alert.
 - Sectors, markets, leadership, governance, sustainability pillars, and
   investor reports are all served from the backend rather than hardcoded.
 
@@ -65,6 +67,13 @@ changing the fetch base URL in `frontend/src/api.js` to the full backend URL).
 ## Environment
 
 - `PORT` — backend port (defaults to `4000`).
+- `DATA_DIR` — writable directory for user-submitted data (newsletter subscribers, contact messages, job
+  applications). **Set this to a mounted volume path in production** (e.g. `/data`) — without it, this data
+  lives on the service's local filesystem and is lost on every redeploy. Falls back to `backend/data/` for
+  local development. Reference content (sectors, news, jobs, etc.) always ships with the code regardless of
+  this setting.
+- `FRONTEND_URL` — restricts CORS to this origin in production. Without it, the API accepts requests from any
+  origin (useful for local dev against the Vite server).
 
 ## Notes on the design
 

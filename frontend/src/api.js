@@ -31,6 +31,7 @@ export const getSustainability = () => get("/sustainability");
 export const getJobs = () => get("/jobs");
 export const getJob = (id) => get(`/jobs/${id}`);
 export const getInvestorReports = () => get("/investor-reports");
+export const investorReportDownloadUrl = (id) => `${BASE}/investor-reports/${id}/download`;
 export const getNews = () => get("/news");
 export const getArticle = (id) => get(`/news/${id}`);
 
