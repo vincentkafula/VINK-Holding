@@ -13,8 +13,8 @@ export default function Contact() {
     <>
       <PageBanner
         eyebrow="Contact Us"
-        title="Let's Talk"
-        blurb="Whether you're an investor, a partner, or exploring a career with us, our team will route your message to the right people."
+        title="Tell Us What You're Trying to Do"
+        blurb="Investor, partner, candidate, or press — the subject dropdown below routes you to the right team."
       />
 
       <section className="px-6 lg:px-8 py-16 max-w-7xl mx-auto grid lg:grid-cols-5 gap-10">

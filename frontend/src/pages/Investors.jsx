@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { FileText, Download } from "lucide-react";
 import PageBanner from "../components/PageBanner.jsx";
 import SlidingAdverts from "../components/SlidingAdverts.jsx";
@@ -26,8 +27,8 @@ export default function Investors() {
     <>
       <PageBanner
         eyebrow="Investors"
-        title="Transparent Governance, Steady Returns"
-        blurb="We report performance across all six sectors with the same discipline institutional investors expect, backed by strong governance and a long-term capital allocation strategy."
+        title="The Numbers, Not Just the Story"
+        blurb="Group-wide financial controls, independent audit, and third-party assurance across every subsidiary — reported to the same standard we'd expect if we were listed."
       />
       <SlidingAdverts />
 
@@ -41,6 +42,13 @@ export default function Investors() {
           <h2 className="text-xs tracking-[0.2em] text-vh-gold whitespace-nowrap">FINANCIAL REPORTS</h2>
           <div className="h-px flex-1 bg-vh-line" />
         </div>
+
+        {status === "ready" && reports.length > 0 && (
+          <p className="text-sm text-vh-cream/60 mb-6">
+            New here? Start with the <span className="text-vh-gold">FY2025 Annual Report</span> — everything else
+            in this list builds on it.
+          </p>
+        )}
 
         {status === "loading" && (
           <div className="space-y-3">
@@ -81,30 +89,39 @@ export default function Investors() {
       </section>
 
       <section id="governance" className="scroll-mt-24 px-6 lg:px-8 py-16 max-w-7xl mx-auto">
-        <div className="rounded-sm border border-vh-line bg-vh-forest-light p-8 grid md:grid-cols-2 gap-8">
-          <div>
+        <div className="grid md:grid-cols-5 gap-6">
+          <div className="md:col-span-2 rounded-sm border border-vh-line bg-vh-forest-light p-8">
             <p className="text-vh-gold text-xs tracking-[0.2em] mb-4">SHAREHOLDER INFORMATION</p>
-            <h2 className="font-display text-2xl text-vh-cream leading-tight">
+            <h2 className="font-display text-xl text-vh-cream leading-tight">
               Built for institutional-grade diligence
             </h2>
-            <p className="mt-4 text-sm text-vh-cream/70 leading-relaxed">
-              Vink Holdings maintains group-wide financial controls, an independent audit function, and
-              third-party assurance on financial statements across all subsidiaries — the same standards
-              regional and international investors expect from a group of our scale.
+            <p className="mt-3 text-sm text-vh-cream/70 leading-relaxed">
+              Group-wide financial controls, an independent audit function, and third-party assurance on
+              financial statements across all subsidiaries.
             </p>
           </div>
-          <div>
-            <p className="text-vh-gold text-xs tracking-[0.2em] mb-4">INVESTOR RELATIONS CONTACT</p>
-            <p className="text-sm text-vh-cream/70 leading-relaxed">
-              For investor enquiries, financial statements, or scheduling a call with the Group CFO's office,
-              reach us directly.
+          <div className="md:col-span-3 rounded-sm border border-vh-gold/40 bg-vh-forest-card p-8">
+            <p className="text-vh-gold text-xs tracking-[0.2em] mb-4">INVESTOR RELATIONS</p>
+            <h2 className="font-display text-2xl text-vh-cream leading-tight">
+              Get the Group CFO's Office Directly
+            </h2>
+            <p className="mt-3 text-sm text-vh-cream/70 leading-relaxed">
+              No account executive, no queue — investor enquiries go straight to the CFO's team.
             </p>
-            <a
-              href="mailto:investor.relations@vinkholdings.com"
-              className="mt-4 inline-block text-vh-gold hover:text-vh-gold-light text-sm"
-            >
-              investor.relations@vinkholdings.com →
-            </a>
+            <div className="mt-6 flex flex-wrap items-center gap-4">
+              <a
+                href="mailto:investor.relations@vinkholdings.com"
+                className="text-vh-gold hover:text-vh-gold-light text-sm"
+              >
+                investor.relations@vinkholdings.com
+              </a>
+              <Link
+                to="/contact?subject=Investor+Enquiry"
+                className="rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+              >
+                Request a Call →
+              </Link>
+            </div>
           </div>
         </div>
       </section>

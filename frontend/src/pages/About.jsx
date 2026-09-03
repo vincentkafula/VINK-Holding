@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { MapPin, CheckCircle2 } from "lucide-react";
 import PageBanner from "../components/PageBanner.jsx";
 import SlidingAdverts from "../components/SlidingAdverts.jsx";
@@ -25,8 +26,8 @@ export default function About() {
     <>
       <PageBanner
         eyebrow="About Us"
-        title="Two Decades of Disciplined, Diversified Growth"
-        blurb="Vink Holdings builds and acquires businesses that compound value over decades — not just across one industry, but across the industries that African economies are built on."
+        title="Built to Operate Six Industries — Not Just Own Them"
+        blurb="Founded in 2011 in Lusaka, Zambia, Vink Holdings has grown into a diversified operating group across seven African markets — not by chasing every opportunity, but by building where we can bring real operating capability."
       />
       <SlidingAdverts />
 
@@ -34,7 +35,7 @@ export default function About() {
         <div className="lg:col-span-2">
           <p className="text-vh-gold text-xs tracking-[0.2em] mb-4">OUR STORY</p>
           <h2 className="font-display text-2xl sm:text-3xl text-vh-cream leading-tight">
-            Founded in {company?.founded || "2011"}, headquartered in {company?.headquarters || "Lusaka, Zambia"}
+            We'd rather be excellent at six sectors than mediocre across all of them
           </h2>
           <div className="mt-5 h-px w-16 bg-vh-gold" />
           <p className="mt-6 text-vh-cream/75 leading-relaxed">
@@ -42,12 +43,12 @@ export default function About() {
               "Vink Holdings is a diversified holding company committed to driving growth, innovation, and positive impact across key industries and communities."}
           </p>
           <p className="mt-4 text-vh-cream/75 leading-relaxed">
-            We don't chase every opportunity — we build where we can bring real operating capability: real estate
-            and infrastructure where we can develop and manage assets directly, financial services where we can
-            underwrite credit risk ourselves, and agriculture and trading businesses where regional logistics and
-            distribution density create a durable advantage. Each subsidiary is run by an operating team with
-            sector expertise, reporting into a lean group centre that focuses on capital allocation, risk, and
-            governance rather than day-to-day management.
+            We don't run a portfolio of passive stakes. Each subsidiary is led by an operating team with
+            sector-specific expertise — property managers who manage buildings, credit officers who underwrite
+            loans, agronomists who work fields — reporting into a lean group centre focused on capital allocation,
+            risk, and governance rather than day-to-day management. A holding company that tries to run six
+            industries centrally ends up mediocre at all of them; we'd rather be disciplined about which six
+            we're in.
           </p>
         </div>
 
@@ -80,6 +81,10 @@ export default function About() {
           <h2 className="text-xs tracking-[0.2em] text-vh-gold whitespace-nowrap">OUR MARKETS</h2>
           <div className="h-px flex-1 bg-vh-line" />
         </div>
+        <p className="text-sm text-vh-cream/60 -mt-6 mb-8 max-w-xl">
+          Seven markets, chosen the same way we choose sectors: where we can bring real operating advantage, not
+          just capital.
+        </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {markets.map((m) => (
             <div key={m.code} className="rounded-sm border border-vh-line bg-vh-forest-card p-5">
@@ -125,6 +130,10 @@ export default function About() {
           <h2 className="font-display text-2xl text-vh-cream leading-tight max-w-lg">
             Governance built for a diversified group, not a single business
           </h2>
+          <p className="mt-3 text-sm text-vh-cream/60 max-w-lg">
+            Governance built for a diversified group has to work differently than governance for a single
+            business — here's what that looks like in practice:
+          </p>
           <div className="mt-6 grid sm:grid-cols-2 gap-x-8 gap-y-3 max-w-2xl">
             {governance.map((item) => (
               <div key={item} className="flex items-start gap-2 text-sm text-vh-cream/80">
@@ -134,6 +143,16 @@ export default function About() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="px-6 lg:px-8 py-16 max-w-7xl mx-auto text-center">
+        <h2 className="font-display text-2xl text-vh-cream">Want the detail behind these numbers?</h2>
+        <Link
+          to="/investors#reports"
+          className="mt-6 inline-block rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+        >
+          Read Our Latest Investor Report →
+        </Link>
       </section>
     </>
   );

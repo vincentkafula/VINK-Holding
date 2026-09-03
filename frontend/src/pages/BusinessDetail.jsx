@@ -47,7 +47,7 @@ export default function BusinessDetail() {
 
   return (
     <>
-      <PageBanner eyebrow="Our Businesses" title={sector.name} blurb={sector.shortDescription} />
+      <PageBanner eyebrow="Our Businesses" title={sector.name} blurb={sector.statLedSubhead || sector.shortDescription} />
 
       <section className="px-6 lg:px-8 py-16 max-w-7xl mx-auto">
         <Link to="/businesses" className="inline-flex items-center gap-1.5 text-xs text-vh-cream/60 hover:text-vh-gold mb-8">
@@ -98,10 +98,10 @@ export default function BusinessDetail() {
               ))}
             </dl>
             <Link
-              to="/contact"
+              to={`/contact?subject=Partnership+Enquiry&sector=${encodeURIComponent(sector.name)}`}
               className="mt-6 block text-center rounded-sm bg-vh-gold px-5 py-2.5 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
             >
-              Discuss this sector →
+              {sector.ctaLabel || "Discuss this sector →"}
             </Link>
           </div>
         </div>

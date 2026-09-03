@@ -131,6 +131,16 @@ export default function Careers() {
       <SlidingAdverts />
 
       <section className="px-6 lg:px-8 py-16 max-w-7xl mx-auto">
+        <div className="rounded-sm border border-vh-line bg-vh-forest-light p-8 mb-12">
+          <p className="text-vh-gold text-xs tracking-[0.2em] mb-3">WHAT "ACROSS SIX INDUSTRIES" ACTUALLY MEANS</p>
+          <p className="text-sm text-vh-cream/75 leading-relaxed max-w-3xl">
+            Move from a property management role into financial services credit analysis. Take agronomy
+            experience from Malawi into a new energy project in Mozambique. We hire for judgment and track
+            record more than for a fixed job description — because the group needs people who can operate in
+            more than one sector over a career, not just fill one seat.
+          </p>
+        </div>
+
         <div className="flex items-center gap-4 mb-8">
           <div className="h-px flex-1 bg-vh-line" />
           <h2 className="text-xs tracking-[0.2em] text-vh-gold whitespace-nowrap">OPEN ROLES</h2>

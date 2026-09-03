@@ -34,8 +34,8 @@ export default function Businesses() {
     <>
       <PageBanner
         eyebrow="Our Businesses"
-        title="Six Sectors, One Operating Discipline"
-        blurb="Every subsidiary is run by a dedicated operating team with sector expertise, backed by group-wide governance, capital allocation, and risk oversight."
+        title="Six Sectors. Zero Overlap in How We Run Them."
+        blurb="Every subsidiary has its own operating team, its own P&L, and its own sector expertise — what they share is group-level governance, capital discipline, and risk oversight."
       />
       <SlidingAdverts />
 

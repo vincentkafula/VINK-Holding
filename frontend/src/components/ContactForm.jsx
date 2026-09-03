@@ -1,11 +1,23 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { submitContact } from "../api.js";
 
-const initialForm = { name: "", email: "", phone: "", subject: "", message: "" };
+const SUBJECT_OPTIONS = ["Investor Enquiry", "Partnership Enquiry", "Media Enquiry", "Careers", "General Enquiry"];
 
 export default function ContactForm({ compact = false }) {
-  const [form, setForm] = useState(initialForm);
+  const [searchParams] = useSearchParams();
+  const prefillSubject = searchParams.get("subject");
+  const prefillSector = searchParams.get("sector");
+  const validSubject = SUBJECT_OPTIONS.includes(prefillSubject) ? prefillSubject : "General Enquiry";
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: validSubject,
+    message: prefillSector ? `Re: ${prefillSector} — ` : "",
+  });
   const [state, setState] = useState({ status: "idle", message: "", reference: "" });
 
   const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -16,7 +28,7 @@ export default function ContactForm({ compact = false }) {
     try {
       const res = await submitContact(form);
       setState({ status: "success", message: res.message, reference: res.reference });
-      setForm(initialForm);
+      setForm({ name: "", email: "", phone: "", subject: "General Enquiry", message: "" });
     } catch (err) {
       setState({ status: "error", message: err.message, reference: "" });
     }
@@ -72,12 +84,17 @@ export default function ContactForm({ compact = false }) {
         </div>
         <div>
           <label className="text-xs text-vh-cream/60">Subject</label>
-          <input
+          <select
             value={form.subject}
             onChange={update("subject")}
-            placeholder="General Enquiry"
-            className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream placeholder:text-vh-cream/30 focus:outline-none focus:border-vh-gold"
-          />
+            className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
+          >
+            {SUBJECT_OPTIONS.map((opt) => (
+              <option key={opt} value={opt} className="bg-vh-forest text-vh-cream">
+                {opt}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <div>

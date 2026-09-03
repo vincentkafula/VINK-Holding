@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Play } from "lucide-react";
-import InfoModal from "./InfoModal.jsx";
-
 const SLIDES = [
   {
     eyebrow: "Diverse Businesses. Stronger Together.",
-    heading: "Building Sustainable\nValue Across Generations",
-    body: "Vink Holdings is a diversified holding company committed to driving growth, innovation, and positive impact across key industries and communities.",
+    heading: "Six Industries. One Disciplined\nOperator. Seven African Markets.",
+    body: "Vink Holdings builds and acquires businesses in real estate, financial services, agriculture, trading, energy, and hospitality — each run by a dedicated operating team, backed by group-wide governance built for institutional diligence.",
   },
   {
     eyebrow: "Six Sectors. One Vision.",
@@ -28,7 +25,6 @@ const SLIDES = [
 
 export default function Hero() {
   const [active, setActive] = useState(0);
-  const [videoOpen, setVideoOpen] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -143,17 +139,17 @@ export default function Hero() {
 
         <div className="mt-9 flex flex-wrap items-center gap-4">
           <Link
-            to="/about"
+            to="/contact?subject=Investor+Enquiry"
             className="rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
           >
-            About Vink Holdings →
+            Talk to Investor Relations →
           </Link>
-          <button
-            onClick={() => setVideoOpen(true)}
+          <Link
+            to="/businesses"
             className="flex items-center gap-2 rounded-sm border border-vh-cream/30 px-6 py-3 text-sm font-medium text-vh-cream hover:border-vh-gold hover:text-vh-gold transition-colors"
           >
-            <Play size={16} /> Watch Corporate Video
-          </button>
+            See Our Six Sectors
+          </Link>
         </div>
 
         <div className="mt-14 flex items-center gap-2">
@@ -169,12 +165,6 @@ export default function Hero() {
           ))}
         </div>
       </div>
-
-      <InfoModal open={videoOpen} onClose={() => setVideoOpen(false)} title="Vink Holdings Corporate Video">
-        <div className="aspect-video rounded-sm bg-vh-black/60 border border-vh-line flex items-center justify-center text-vh-cream/50 text-xs">
-          Corporate video coming soon.
-        </div>
-      </InfoModal>
     </section>
   );
 }
