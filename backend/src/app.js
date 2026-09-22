@@ -148,7 +148,7 @@ app.get("/api/investor-reports/:id/download", async (req, res) => {
     const gold = "#b8863f";
     const dark = "#1a1a1a";
 
-    doc.fillColor(gold).fontSize(10).font("Helvetica-Bold").text("VINK HOLDINGS", { characterSpacing: 2 });
+    doc.fillColor(gold).fontSize(10).font("Helvetica-Bold").text("VINK GROUP", { characterSpacing: 2 });
     doc.moveDown(1.2);
     doc.fillColor(dark).fontSize(22).font("Helvetica-Bold").text(report.title);
     doc.moveDown(0.3);
@@ -175,7 +175,7 @@ app.get("/api/investor-reports/:id/download", async (req, res) => {
 
     doc.moveDown(2);
     doc.fillColor("#999").fontSize(9).text(
-      `Generated ${new Date().toLocaleString("en-US")} · Vink Holdings, Stand No. 1234, Independence Ave, Lusaka, Zambia`
+      `Generated ${new Date().toLocaleString("en-US")} · VINK Group Pty Ltd, Stand No. 1234, Independence Ave, Lusaka, Zambia`
     );
 
     doc.end();
@@ -234,9 +234,9 @@ app.post("/api/newsletter", submissionLimiter, async (req, res) => {
       subscribedAt: new Date().toISOString(),
     }));
 
-    notify("New newsletter subscriber", `${normalized} just subscribed to Vink Holdings updates.`);
+    notify("New newsletter subscriber", `${normalized} just subscribed to VINK Group updates.`);
 
-    res.status(201).json({ message: "Thanks for subscribing to Vink Holdings updates." });
+    res.status(201).json({ message: "Thanks for subscribing to VINK Group updates." });
   } catch (err) {
     res.status(500).json({ error: "Something went wrong. Please try again." });
   }
@@ -276,7 +276,7 @@ app.post("/api/contact", submissionLimiter, async (req, res) => {
     );
 
     res.status(201).json({
-      message: "Thank you for contacting Vink Holdings. Our team will respond within 2 business days.",
+      message: "Thank you for contacting VINK Group. Our team will respond within 2 business days.",
       reference: `VH-${entry.id.toString().padStart(5, "0")}`,
     });
   } catch (err) {

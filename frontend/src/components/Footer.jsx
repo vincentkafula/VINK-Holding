@@ -58,10 +58,10 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-3">
-              <img src="/logo.png" alt="Vink Holdings" className="h-10 w-auto" />
+              <img src="/logo.png" alt="VINK Group" className="h-10 w-auto" />
               <span className="leading-tight">
                 <span className="block font-display text-base text-vh-cream">VINK</span>
-                <span className="block text-[10px] tracking-[0.25em] text-vh-gold -mt-1">HOLDINGS</span>
+                <span className="block text-[10px] tracking-[0.25em] text-vh-gold -mt-1">GROUP</span>
               </span>
             </Link>
             <p className="mt-4 text-xs text-vh-cream/60 leading-relaxed max-w-[220px]">
@@ -149,7 +149,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 pt-6 border-t border-vh-line flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-vh-cream/50">
-          <p>© 2025 Vink Holdings. All Rights Reserved.</p>
+          <p>© 2025 VINK Group Pty Ltd. All Rights Reserved.</p>
           <div className="flex items-center gap-4">
             <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-vh-gold">Privacy Policy</a>
             <span>|</span>

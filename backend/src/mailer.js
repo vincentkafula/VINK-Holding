@@ -24,7 +24,7 @@ export async function notify(subject, text) {
   if (!EMAIL_ENABLED || !transporter) return;
   try {
     await transporter.sendMail({
-      from: `"Vink Holdings Site" <${SMTP_USER}>`,
+      from: `"VINK Group Site" <${SMTP_USER}>`,
       to: NOTIFY_EMAIL,
       subject,
       text,

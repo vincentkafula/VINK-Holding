@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
-  title: Vink Holdings API
+  title: VINK Group API
   version: "1.0.0"
   description: |
-    Backend API for the Vink Holdings corporate site. Two categories of route:
+    Backend API for the VINK Group corporate site. Two categories of route:
     public content reads + public form submissions (rate-limited), and three
     admin-only reads (bearer-token auth, also rate-limited).
 servers:

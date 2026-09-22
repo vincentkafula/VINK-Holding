@@ -27,7 +27,7 @@ export default function About() {
       <PageBanner
         eyebrow="About Us"
         title="Built to Operate Six Industries — Not Just Own Them"
-        blurb="Founded in 2011 in Lusaka, Zambia, Vink Holdings has grown into a diversified operating group across seven African markets — not by chasing every opportunity, but by building where we can bring real operating capability."
+        blurb="Founded in 2011 in Lusaka, Zambia, VINK Group has grown into a diversified operating group across seven African markets — not by chasing every opportunity, but by building where we can bring real operating capability."
       />
       <SlidingAdverts />
 
@@ -40,7 +40,7 @@ export default function About() {
           <div className="mt-5 h-px w-16 bg-vh-gold" />
           <p className="mt-6 text-vh-cream/75 leading-relaxed">
             {company?.description ||
-              "Vink Holdings is a diversified holding company committed to driving growth, innovation, and positive impact across key industries and communities."}
+              "VINK Group is a diversified holding company committed to driving growth, innovation, and positive impact across key industries and communities."}
           </p>
           <p className="mt-4 text-vh-cream/75 leading-relaxed">
             We don't run a portfolio of passive stakes. Each subsidiary is led by an operating team with

@@ -32,7 +32,7 @@ describe("ContactForm", () => {
   it("submits the form and shows the server's success message", async () => {
     global.fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ message: "Thank you for contacting Vink Holdings.", reference: "VH-00042" }),
+      json: async () => ({ message: "Thank you for contacting VINK Group.", reference: "VH-00042" }),
     });
 
     const user = userEvent.setup();
@@ -48,7 +48,7 @@ describe("ContactForm", () => {
     await user.click(screen.getByRole("button", { name: /Send Message/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/Thank you for contacting Vink Holdings/i)).toBeInTheDocument();
+      expect(screen.getByText(/Thank you for contacting VINK Group/i)).toBeInTheDocument();
     });
     expect(screen.getByText(/VH-00042/)).toBeInTheDocument();
     expect(global.fetch).toHaveBeenCalledTimes(1);

@@ -9,9 +9,9 @@ bigger system than it is.
 ```mermaid
 C4Context
     Person(visitor, "Site visitor", "Investor, partner, candidate, journalist, or general public")
-    Person(admin, "Vink Holdings admin", "Reads submissions via the admin-token-gated endpoints")
+    Person(admin, "VINK Group admin", "Reads submissions via the admin-token-gated endpoints")
 
-    System(site, "Vink Holdings site", "React SPA + Express API — content, forms, PDF reports")
+    System(site, "VINK Group site", "React SPA + Express API — content, forms, PDF reports")
 
     System_Ext(railway, "Railway", "Hosting: two services, one persistent volume")
     System_Ext(smtp, "SMTP provider", "Optional — email notification on new submissions")
@@ -30,7 +30,7 @@ C4Context
 C4Container
     Person(visitor, "Site visitor")
 
-    Container_Boundary(site, "Vink Holdings site") {
+    Container_Boundary(site, "VINK Group site") {
         Container(spa, "Frontend", "React 19 + Vite + React Router", "10 routed pages, static build served by 'serve'")
         Container(api, "Backend API", "Node 22 + Express", "22 routes: 19 public reads/writes, 3 session-gated admin reads")
         ContainerDb(content, "content.json", "Reference data, ships with the code", "sectors, news, jobs, markets, leadership, etc. — read-only at runtime")

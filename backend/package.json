@@ -1,7 +1,7 @@
 {
-  "name": "vink-holdings-backend",
+  "name": "vink-group-backend",
   "version": "1.0.0",
-  "description": "Vink Holdings corporate site API",
+  "description": "VINK Group corporate site API",
   "main": "server.js",
   "type": "module",
   "scripts": {

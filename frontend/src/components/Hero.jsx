@@ -4,7 +4,7 @@ const SLIDES = [
   {
     eyebrow: "Diverse Businesses. Stronger Together.",
     heading: "Six Industries. One Disciplined\nOperator. Seven African Markets.",
-    body: "Vink Holdings builds and acquires businesses in real estate, financial services, agriculture, trading, energy, and hospitality — each run by a dedicated operating team, backed by group-wide governance built for institutional diligence.",
+    body: "VINK Group builds and acquires businesses in real estate, financial services, agriculture, trading, energy, and hospitality — each run by a dedicated operating team, backed by group-wide governance built for institutional diligence.",
   },
   {
     eyebrow: "Six Sectors. One Vision.",

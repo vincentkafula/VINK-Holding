@@ -1,6 +1,6 @@
-# Vink Holdings — Website Content Audit & Rewrite
+# VINK Group — Website Content Audit & Rewrite
 
-**Business:** Vink Holdings — diversified holding company (Real Estate, Financial Services, Agriculture & Agro-Processing, Trading & Distribution, Energy & Infrastructure, Hospitality & Services) operating across seven African markets, headquartered in Lusaka, Zambia.
+**Business:** VINK Group — diversified holding company (Real Estate, Financial Services, Agriculture & Agro-Processing, Trading & Distribution, Energy & Infrastructure, Hospitality & Services) operating across seven African markets, headquartered in Lusaka, Zambia.
 
 **Audience (assumed):** institutional investors & analysts (primary), corporate/JV partners, senior talent evaluating Careers, journalists, and regulators in expansion markets.
 
@@ -9,7 +9,7 @@
 **Primary goal (assumed):** build institutional-grade credibility and generate three kinds of inbound: investor interest, partnership enquiries, and senior talent applications. Not a single-funnel lead-gen site.
 
 **Proposed target keywords** (none were supplied — swap these for real ones if you have them):
-`diversified holding company Africa` · `Zambia investment group` · `African conglomerate` · `regional holding company Southern Africa` · `invest in Zambia` · `financial services Zambia` · `agriculture investment Africa` · `renewable energy Zambia` · `careers Zambia` · `Vink Holdings`
+`diversified holding company Africa` · `Zambia investment group` · `African conglomerate` · `regional holding company Southern Africa` · `invest in Zambia` · `financial services Zambia` · `agriculture investment Africa` · `renewable energy Zambia` · `careers Zambia` · `VINK Group`
 
 ---
 
@@ -18,7 +18,7 @@
 ### Critique of current content
 - **Headline is a mood, not a claim.** "Building Sustainable Value Across Generations" sounds right for a holding company but tells a visitor nothing they couldn't guess from the logo. It doesn't say what you *do* or why that matters to the specific person reading it.
 - **No keyword surface area.** Zero mentions of "Africa," "Zambia," or any sector name in the hero copy — everything load-bearing for SEO is buried in a card grid below the fold.
-- **Two competing CTAs with no priority.** "About Vink Holdings" and "Watch Corporate Video" are given equal visual weight, but they serve completely different visitors (a fast skim vs. a deep dive). Neither is the CTA an investor or a job-seeker is actually looking for.
+- **Two competing CTAs with no priority.** "About VINK Group" and "Watch Corporate Video" are given equal visual weight, but they serve completely different visitors (a fast skim vs. a deep dive). Neither is the CTA an investor or a job-seeker is actually looking for.
 - **Sector cards describe activity, not outcome.** "Creating sustainable spaces that inspire and enrich communities" is true of almost any real estate company on the continent — it doesn't differentiate Vink.
 - **Stats bar has no context.** "Strong" as a financial performance stat is doing no work — it's the one place on the page a number should replace an adjective, and it's the one place it doesn't.
 
@@ -30,7 +30,7 @@
 # Six Industries. One Disciplined Operator. Seven African Markets.
 
 **Subhead:**
-Vink Holdings builds and acquires businesses in real estate, financial services, agriculture, trading, energy, and hospitality — each run by a dedicated operating team, backed by group-wide governance built for institutional diligence.
+VINK Group builds and acquires businesses in real estate, financial services, agriculture, trading, energy, and hospitality — each run by a dedicated operating team, backed by group-wide governance built for institutional diligence.
 
 **Primary CTA:** `Talk to Investor Relations →`
 **Secondary CTA:** `See Our Six Sectors`
@@ -70,7 +70,7 @@ A holding company's home page has three different visitors trying to do three di
 # Built to Operate Six Industries — Not Just Own Them
 
 **Subhead:**
-Founded in 2011 in Lusaka, Zambia, Vink Holdings has grown into a diversified operating group across seven African markets — not by chasing every opportunity, but by building where we can bring real operating capability.
+Founded in 2011 in Lusaka, Zambia, VINK Group has grown into a diversified operating group across seven African markets — not by chasing every opportunity, but by building where we can bring real operating capability.
 
 **Body (keep, tighten):**
 We don't run a portfolio of passive stakes. Each subsidiary is led by an operating team with sector-specific expertise — property managers who manage buildings, credit officers who underwrite loans, agronomists who work fields — reporting into a lean group centre focused on capital allocation, risk, and governance rather than day-to-day management.
@@ -216,7 +216,7 @@ Leading each pillar with its hardest number instead of its category name turns f
 **Headline (keep):** Build Your Career Across Six Industries
 
 **Subhead (keep, it's solid):**
-With 2,500+ employees and 20+ subsidiary companies, Vink Holdings offers career paths that move across sectors, not just up a single ladder.
+With 2,500+ employees and 20+ subsidiary companies, VINK Group offers career paths that move across sectors, not just up a single ladder.
 
 **Add — EVP block above the job list (currently missing):**
 ### What "Across Six Industries" Actually Means

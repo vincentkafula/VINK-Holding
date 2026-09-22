@@ -37,7 +37,7 @@ export default function News() {
       <PageBanner
         eyebrow="News & Updates"
         title="Announcements From Across the Group"
-        blurb="Corporate results, sustainability milestones, and community initiatives from Vink Holdings and its subsidiaries."
+        blurb="Corporate results, sustainability milestones, and community initiatives from VINK Group and its subsidiaries."
       />
       <SlidingAdverts />
 

@@ -1,6 +1,6 @@
-# Vink Holdings — Corporate Website
+# VINK Group — Corporate Website
 
-Full-stack rebuild of the Vink Holdings landing page: React frontend + Node/Express
+Full-stack rebuild of the VINK Group landing page: React frontend + Node/Express
 backend with real, working functionality (not just static markup).
 
 ## Structure

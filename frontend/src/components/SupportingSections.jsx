@@ -18,7 +18,7 @@ const BLOCKS = [
     to: "/careers",
     eyebrow: "Careers",
     title: "Build Your Career Across Six Industries",
-    body: "With 2,500+ employees and 20+ subsidiary companies, Vink Holdings offers career paths that move across sectors, not just up a single ladder.",
+    body: "With 2,500+ employees and 20+ subsidiary companies, VINK Group offers career paths that move across sectors, not just up a single ladder.",
   },
 ];
 

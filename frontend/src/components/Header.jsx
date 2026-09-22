@@ -54,10 +54,10 @@ export default function Header() {
 
       <div className="flex items-center justify-between px-6 lg:px-8 py-4">
         <Link to="/" className="flex items-center gap-3 shrink-0" onClick={() => setMenuOpen(false)}>
-          <img src="/logo.png" alt="Vink Holdings" className="h-11 w-auto" />
+          <img src="/logo.png" alt="VINK Group" className="h-11 w-auto" />
           <span className="leading-tight">
             <span className="block font-display text-lg tracking-wide text-vh-cream">VINK</span>
-            <span className="block text-[10px] tracking-[0.25em] text-vh-gold -mt-1">HOLDINGS</span>
+            <span className="block text-[10px] tracking-[0.25em] text-vh-gold -mt-1">GROUP</span>
             <span className="hidden sm:block text-[8px] tracking-[0.12em] text-vh-cream/40 mt-0.5">
               BUILDING VALUE. EMPOWERING FUTURES.
             </span>
