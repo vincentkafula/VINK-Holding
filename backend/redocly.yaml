@@ -1,0 +1,17 @@
+extends:
+  - recommended
+
+rules:
+  # Parameterless public GETs (health, company, sectors, markets, ads, ...)
+  # have no realistic client error to document — no path params, no auth, no
+  # body. Forcing a fake 4xx onto them would be less honest documentation,
+  # not more. Endpoints that genuinely can 4xx (path params, POST bodies,
+  # admin auth) already document their real error responses.
+  operation-4xx-response: off
+
+  # The localhost dev server entry is intentional, not an oversight.
+  no-server-example.com: off
+
+  # Small internal API, no published client SDK — not worth the churn of
+  # keeping a license field in sync.
+  info-license: off

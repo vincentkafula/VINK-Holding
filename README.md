@@ -107,6 +107,17 @@ site, not a banking platform, so the controls below are scoped to what actually 
   currently block the Railway auto-deploy, which redeploys on push independent of CI result — wiring that up
   is a known gap (see below).
 
+## Documentation
+
+- `docs/architecture.md` — C4 context/container diagrams (Mermaid), the actual data model (three flat JSON
+  shapes — there's no relational database), and a short migration plan for the two items deliberately
+  deferred from Phase 1.
+- `docs/threat-model.md` — STRIDE analysis mapped to what's actually mitigated in the code, with the two
+  accepted-risk items explained rather than silently ignored.
+- `backend/openapi.yaml` — OpenAPI 3.1 contract for all 21 routes. Lints clean (`npm run lint:openapi` in
+  `backend/`) and is checked against the live route list in `src/app.js` on every run, so it can't silently
+  drift from the real API.
+
 ## Testing
 
 ```bash

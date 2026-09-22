@@ -23,6 +23,8 @@ jobs:
       - run: npm ci
       - name: Dependency audit (fails on high/critical)
         run: npm audit --audit-level=high
+      - name: Lint OpenAPI spec
+        run: npm run lint:openapi
       - run: npm test
 
   frontend:
