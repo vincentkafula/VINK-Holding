@@ -21,23 +21,54 @@ response template. If something isn't listed here, it hasn't come up yet; add it
 5. Rollback: Railway keeps prior successful deployments — redeploy the last known-good one from the
    dashboard, or `git revert` the bad commit and push (triggers a fresh deploy).
 
-## Lost or need to rotate the admin token
+## Lost admin password, or need to rotate it
 
-The admin token isn't stored anywhere recoverable by design — it's a Railway environment variable, not a
-password with a reset flow.
+The password isn't stored anywhere recoverable by design — it only ever existed as plaintext for a moment
+when it was generated, then only its bcrypt hash lives in Railway.
 
-1. Generate a new one: `python3 -c "import secrets; print(secrets.token_hex(32))"` (or `openssl rand -hex 32`).
-2. Set it as `ADMIN_TOKEN` on the `vink-holding-backend` service in Railway. This redeploys the backend
-   automatically.
-3. The old token stops working immediately on redeploy. Update it in `/admin` (the browser will ask again
-   since it's stored in `sessionStorage`, not persisted across a token change).
-4. If you rotate and don't have the old one to compare, that's fine — there's no migration step, it's a
-   stateless bearer check.
+1. Generate a new password + hash together, so they're guaranteed to match:
+   ```bash
+   node -e "
+   const bcrypt = require('bcryptjs');
+   const crypto = require('crypto');
+   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+   let password = '';
+   for (let i = 0; i < 24; i++) password += alphabet[crypto.randomInt(alphabet.length)];
+   console.log('password:', password);
+   console.log('hash:', bcrypt.hashSync(password, 12));
+   "
+   ```
+2. Set the new hash as `ADMIN_PASSWORD_HASH` on the `vink-holding-backend` service in Railway. This
+   redeploys the backend automatically.
+3. Every existing session is invalidated immediately on redeploy (the old password no longer verifies against
+   anything, and any live session tokens are still valid until they naturally expire within 8h — rotate
+   `JWT_SECRET` too if you need to invalidate active sessions immediately, not just block new logins).
+4. Log in again at `/admin` with the new password.
+5. If backups are configured (`BACKUP_ADMIN_PASSWORD` GitHub Actions secret), update it there too, or the
+   nightly backup workflow will start failing its login step.
 
 ## Recovering submission data (contact messages, subscribers, applications)
 
-This data lives only on the Railway volume mounted at `/data` on the backend service — it is **not** in git,
-**not** in `content.json`, and has no automatic backup configured (see "Known gaps" below).
+This data lives on the Railway volume mounted at `/data` on the backend service — it is **not** in git,
+**not** in `content.json`. A nightly snapshot is also committed to the `data-backups` branch (see
+`.github/workflows/backup.yml`); if the volume is lost, that branch is the recovery path (up to 24h of data
+loss at worst, not total loss).
+
+## Checking or manually running the backup
+
+The backup workflow runs nightly (03:17 UTC) and can also be triggered manually:
+
+1. GitHub → Actions tab → "Backup submission data" → "Run workflow" to trigger it on demand.
+2. Check the `data-backups` branch for `snapshots/<date>/` — three JSON files per day
+   (`contact-messages.json`, `newsletter-subscribers.json`, `careers-applications.json`).
+3. If a run fails, it's almost always one of: the `BACKUP_ADMIN_PASSWORD` GitHub Actions secret is stale
+   (see the password-rotation steps above), or the backend URL changed. Both are set as repository secrets
+   (`BACKUP_ADMIN_USERNAME`, `BACKUP_ADMIN_PASSWORD`, `BACKUP_BACKEND_URL`) under Settings → Secrets and
+   variables → Actions — values aren't viewable once set, only replaceable.
+4. **To restore from a snapshot**: the JSON files are in the same shape the admin API returns them in
+   (an array for messages/applications, `{ count, subscribers }` for the newsletter list) — there's no
+   automated restore script, since restoring means deciding how to merge that snapshot with whatever's
+   currently on the live volume rather than blindly overwriting it.
 
 - **To read it**: use `/admin` on the live site, or `curl` the three admin endpoints directly with the token.
 - **If the volume is somehow lost** (Railway outage, accidental deletion): there is currently no backup to
@@ -70,15 +101,6 @@ Reference: https://docs.railway.com/guides/alerts-crashes-failed-deploys
 
 ## Known gaps (deliberately not fixed — see reasoning in each linked doc)
 
-- **No backup of the submissions volume.** If it's lost, submitted contact messages/subscribers/applications
-  are gone. At current volume (a handful of submissions a week) this is a real but low-probability-low-impact
-  gap — worth fixing before this data matters more than it does today.
-- **CI doesn't gate the Railway deploy.** `.github/workflows/ci.yml` reports pass/fail on GitHub, but pushing
-  to `main` deploys immediately regardless. Fixing this properly means switching to a PR-based workflow
-  (branch protection + required status checks), which is a real process change, not just a settings toggle —
-  deliberately left as your call rather than imposed. See `docs/architecture.md`'s migration plan.
-- **Single shared admin token, not per-person login.** Fine for one or two people checking submissions
-  occasionally; revisit if that changes. See `docs/architecture.md`.
 - **In-process write lock, not distributed.** The concurrency fix (Phase 1) only protects against races
   within one running instance. If this backend ever runs with more than one replica, two replicas could
   still race each other. Not a concern today (single replica, confirmed in the Railway service config).

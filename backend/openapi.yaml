@@ -14,10 +14,14 @@ servers:
 
 components:
   securitySchemes:
-    adminToken:
+    adminSession:
       type: http
       scheme: bearer
-      description: Matches the ADMIN_TOKEN environment variable. Unset on the server -> 503, not open access.
+      bearerFormat: JWT
+      description: |
+        A session token issued by POST /admin/login (8h expiry by default). Requires
+        ADMIN_PASSWORD_HASH and JWT_SECRET to be configured on the server; unset on
+        the server -> 503, not open access.
   schemas:
     Error:
       type: object
@@ -303,32 +307,63 @@ paths:
         "400": { description: Validation error }
         "429": { description: Rate limited }
 
+  /admin/login:
+    post:
+      summary: Admin login — issues a session token
+      operationId: adminLogin
+      security: []
+      description: Rate-limited (5/15min per IP).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username: { type: string }
+                password: { type: string, format: password }
+      responses:
+        "200":
+          description: Session issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string, description: "JWT — send as 'Authorization: Bearer <token>' on admin endpoints." }
+                  expiresAt: { type: string, format: date-time }
+        "400": { description: Missing username/password }
+        "401": { description: Invalid credentials }
+        "429": { description: Rate limited }
+        "503": { description: Admin login not configured on this environment }
+
   /careers/applications:
     get:
       summary: "[Admin] All job applications"
       operationId: listApplications
-      security: [{ adminToken: [] }]
+      security: [{ adminSession: [] }]
       responses:
         "200": { description: OK }
         "401": { description: Missing/wrong token }
-        "503": { description: ADMIN_TOKEN not configured on this environment }
+        "503": { description: Admin login not configured on this environment }
 
   /contact/messages:
     get:
       summary: "[Admin] All contact submissions"
       operationId: listMessages
-      security: [{ adminToken: [] }]
+      security: [{ adminSession: [] }]
       responses:
         "200": { description: OK }
         "401": { description: Missing/wrong token }
-        "503": { description: ADMIN_TOKEN not configured on this environment }
+        "503": { description: Admin login not configured on this environment }
 
   /newsletter/subscribers:
     get:
       summary: "[Admin] All newsletter subscribers"
       operationId: listSubscribers
-      security: [{ adminToken: [] }]
+      security: [{ adminSession: [] }]
       responses:
         "200": { description: OK }
         "401": { description: Missing/wrong token }
-        "503": { description: ADMIN_TOKEN not configured on this environment }
+        "503": { description: Admin login not configured on this environment }

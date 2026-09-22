@@ -1,0 +1,79 @@
+name: Backup submission data
+
+# Logs into the live admin API, pulls the three PII-bearing datasets
+# (contact messages, newsletter subscribers, job applications), and commits
+# a dated snapshot to the dedicated `data-backups` branch — deliberately not
+# `main`, so this never interacts with main's branch protection / CI gating
+# and never pollutes the app's commit history.
+#
+# This exists because the only copy of this data lives on a single Railway
+# volume with no other durability guarantee — see docs/runbook.md.
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # daily, 03:17 UTC — arbitrary off-peak time
+  workflow_dispatch: {} # allows a manual "Run workflow" trigger too
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Fetch a fresh admin session and pull the three datasets
+        env:
+          BACKEND_URL: ${{ secrets.BACKUP_BACKEND_URL }}
+          ADMIN_USERNAME: ${{ secrets.BACKUP_ADMIN_USERNAME }}
+          ADMIN_PASSWORD: ${{ secrets.BACKUP_ADMIN_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          TOKEN=$(curl -sf -X POST "$BACKEND_URL/api/admin/login" \
+            -H "Content-Type: application/json" \
+            -d "{\"username\":\"$ADMIN_USERNAME\",\"password\":\"$ADMIN_PASSWORD\"}" \
+            | node -pe 'JSON.parse(require("fs").readFileSync(0)).token')
+
+          if [ -z "$TOKEN" ] || [ "$TOKEN" = "undefined" ]; then
+            echo "::error::Admin login did not return a token — aborting backup, nothing committed."
+            exit 1
+          fi
+
+          mkdir -p /tmp/backup-snapshot
+          for endpoint in contact/messages newsletter/subscribers careers/applications; do
+            outfile="/tmp/backup-snapshot/$(echo "$endpoint" | tr '/' '-').json"
+            curl -sf "$BACKEND_URL/api/$endpoint" -H "Authorization: Bearer $TOKEN" -o "$outfile"
+          done
+
+      - name: Commit the snapshot to the data-backups branch
+        run: |
+          set -euo pipefail
+          git config user.name "vink-holdings-backup-bot"
+          git config user.email "actions@github.com"
+
+          # Create the orphan backups branch on first run, or check it out if
+          # it already exists — keeps this entirely separate from main.
+          if git ls-remote --exit-code --heads origin data-backups; then
+            git fetch origin data-backups
+            git checkout data-backups
+          else
+            git checkout --orphan data-backups
+            git rm -rf . > /dev/null
+          fi
+
+          DATE=$(date -u +%Y-%m-%d)
+          mkdir -p "snapshots/$DATE"
+          cp /tmp/backup-snapshot/*.json "snapshots/$DATE/"
+
+          git add "snapshots/$DATE"
+          if git diff --cached --quiet; then
+            echo "No changes since last snapshot (identical data) — nothing to commit."
+          else
+            git commit -m "Backup snapshot: $DATE"
+            git push origin data-backups
+          fi

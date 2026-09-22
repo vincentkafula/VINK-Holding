@@ -18,6 +18,14 @@ function adminGet(path, token) {
   }).then(handle);
 }
 
+function adminPost(path, body) {
+  return fetch(`${BASE}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  }).then(handle);
+}
+
 function post(path, body) {
   return fetch(`${BASE}${path}`, {
     method: "POST",
@@ -45,7 +53,8 @@ export const subscribeNewsletter = (email) => post("/newsletter", { email });
 export const submitContact = (payload) => post("/contact", payload);
 export const submitApplication = (payload) => post("/careers/apply", payload);
 
-// --- admin (bearer-token gated) -----------------------------------------
+// --- admin (session-token gated) -----------------------------------------
+export const adminLogin = (username, password) => adminPost("/admin/login", { username, password });
 export const getAdminMessages = (token) => adminGet("/contact/messages", token);
 export const getAdminSubscribers = (token) => adminGet("/newsletter/subscribers", token);
 export const getAdminApplications = (token) => adminGet("/careers/applications", token);

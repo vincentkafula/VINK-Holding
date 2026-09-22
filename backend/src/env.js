@@ -23,14 +23,16 @@ export const PORT = process.env.PORT || 4000;
 // testing both work.
 export const FRONTEND_URL = process.env.FRONTEND_URL || null;
 
-// Shared-secret token for the admin-only endpoints (contact messages,
-// newsletter subscribers, job applications). There is no user login system
-// on this site, so a single bearer token is the intentionally minimal
-// starting point — see docs/content-audit.md / Phase 0 audit for the
-// reasoning and the follow-up options (real login) if that stops being enough.
-// TODO(verify): rotate this token periodically and store it in a secrets
-// manager rather than a plain Railway variable once that's set up.
-export const ADMIN_TOKEN = process.env.ADMIN_TOKEN || null;
+// Admin authentication: username/password login issuing short-lived signed
+// JWTs, replacing the earlier single-shared-bearer-token scheme. All three
+// must be set for the admin login endpoint to function; without them it
+// fails closed (503), matching the same "unset means disabled, not open"
+// principle as the old ADMIN_TOKEN scheme.
+export const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
+export const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH || null;
+export const JWT_SECRET = process.env.JWT_SECRET || null;
+export const JWT_EXPIRY = process.env.JWT_EXPIRY || "8h";
+export const ADMIN_AUTH_CONFIGURED = Boolean(ADMIN_PASSWORD_HASH && JWT_SECRET);
 
 // Optional outbound email notification on new submissions. All four must be
 // set for notifications to fire; if any are missing, the feature is silently

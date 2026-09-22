@@ -11,10 +11,12 @@
     "lint:openapi": "redocly lint openapi.yaml && node scripts/check-openapi-drift.mjs"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "express-rate-limit": "^8.7.0",
     "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
     "morgan": "^1.12.1",
     "nodemailer": "^10.0.10",
     "pdfkit": "^0.20.2"

@@ -6,7 +6,18 @@ import PDFDocument from "pdfkit";
 
 import { FRONTEND_URL, IS_TEST } from "./env.js";
 import { ensureStore, readJSON, appendEntry, loadContent, SUBSCRIBERS_PATH, MESSAGES_PATH, APPLICATIONS_PATH } from "./store.js";
-import { requireAdmin, submissionLimiter, adminLimiter, emailRegex, LIMITS, cleanString, cleanOptionalString } from "./security.js";
+import {
+  requireAdmin,
+  submissionLimiter,
+  adminLimiter,
+  loginLimiter,
+  attemptLogin,
+  emailRegex,
+  LIMITS,
+  cleanString,
+  cleanOptionalString,
+} from "./security.js";
+import { ADMIN_AUTH_CONFIGURED } from "./env.js";
 import { notify } from "./mailer.js";
 
 ensureStore();
@@ -317,10 +328,28 @@ app.post("/api/careers/apply", submissionLimiter, async (req, res) => {
   }
 });
 
-// --- admin-only read endpoints ------------------------------------------------
-// All three below expose real visitor PII and are protected by a bearer
-// token (ADMIN_TOKEN) plus a stricter rate limit. See Phase 0 audit,
-// Finding 1 — these were previously open to anyone.
+// --- admin auth + admin-only read endpoints -----------------------------------
+// The three read endpoints below expose real visitor PII and are protected
+// by a signed session token issued at login. See Phase 0 audit, Finding 1,
+// and docs/architecture.md for why this replaced an earlier static token.
+
+app.post("/api/admin/login", loginLimiter, async (req, res) => {
+  if (!ADMIN_AUTH_CONFIGURED) {
+    return res.status(503).json({ error: "Admin login is not configured on this environment." });
+  }
+  const username = cleanString(req.body?.username, 100);
+  const password = typeof req.body?.password === "string" ? req.body.password : "";
+
+  if (!username.ok || !password) {
+    return res.status(400).json({ error: "Username and password are required." });
+  }
+
+  const session = await attemptLogin(username.value, password);
+  if (!session) {
+    return res.status(401).json({ error: "Invalid username or password." });
+  }
+  res.json(session);
+});
 
 app.get("/api/careers/applications", adminLimiter, requireAdmin, async (req, res) => {
   try {

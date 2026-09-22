@@ -74,10 +74,13 @@ changing the fetch base URL in `frontend/src/api.js` to the full backend URL).
   this setting.
 - `FRONTEND_URL` — restricts CORS to this origin in production. Without it, the API accepts requests from any
   origin (useful for local dev against the Vite server).
-- `ADMIN_TOKEN` — required to access `/api/contact/messages`, `/api/newsletter/subscribers`, and
-  `/api/careers/applications` (send `Authorization: Bearer <token>`). **These three endpoints return 503 —
-  not open access — if this isn't set.** Generate a long random value, e.g. `openssl rand -hex 32`. There is
-  no full login system on this site (see Security model below for why, and what upgrading it would involve).
+- `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, `JWT_SECRET`, `JWT_EXPIRY` — admin login (`POST /api/admin/login`),
+  which issues a signed session token for `/api/contact/messages`, `/api/newsletter/subscribers`, and
+  `/api/careers/applications`. **Login returns 503 — not open access — if `ADMIN_PASSWORD_HASH` or
+  `JWT_SECRET` isn't set.** Generate the hash with
+  `node -e "console.log(require('bcryptjs').hashSync('your-password', 12))"` and the secret with
+  `openssl rand -hex 48`. `JWT_EXPIRY` defaults to `8h`. See Security model below for why this replaced an
+  earlier static bearer token.
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `NOTIFY_EMAIL` — optional. All five (four creds + the
   destination address) must be set for email notifications on new submissions to fire; if any are missing,
   the feature is silently disabled and submissions still succeed normally. Any standard SMTP provider works
@@ -90,10 +93,10 @@ Copy `backend/.env.example` to `backend/.env` and fill in `ADMIN_TOKEN` at minim
 This site has no user accounts, no payments, and no money movement — it's a corporate marketing/investor-relations
 site, not a banking platform, so the controls below are scoped to what actually applies:
 
-- **Admin endpoints** (the three PII-bearing GETs above) are protected by a single shared bearer token, not a
-  full login system. That's an intentional minimal starting point for a site with one or two internal readers,
-  not a shortcut — if more people need access, or you need per-person audit trails, that's the trigger to build
-  real auth (isolated to `requireAdmin` in `backend/src/security.js`, so the swap doesn't touch anything else).
+- **Admin authentication**: username/password login (`POST /api/admin/login`) issuing a signed, 8-hour JWT —
+  not a full multi-user system, but real credential verification (bcrypt) and short-lived sessions rather
+  than a static shared token. Login itself is rate-limited tighter than everything else (5/15min per IP)
+  since it's the one endpoint actually worth brute-forcing.
 - **Rate limiting**: all three public POST endpoints (`/newsletter`, `/contact`, `/careers/apply`) are limited
   to 8 requests per 15 minutes per IP. Admin GETs are limited to 120 per 15 minutes.
 - **Input validation**: every field has a server-side max length (see `backend/src/security.js`) in addition to
@@ -122,29 +125,23 @@ site, not a banking platform, so the controls below are scoped to what actually 
 
 ## Admin access
 
-`/admin` — not linked in navigation, reached by direct URL. Paste the `ADMIN_TOKEN` value (stored only in
-that browser tab's `sessionStorage`) to view contact messages, newsletter subscribers, and job applications.
-See `docs/runbook.md` for rotating a lost token.
+`/admin` — not linked in navigation, reached by direct URL. Log in with the `ADMIN_USERNAME`/password pair
+(session lasts 8 hours, stored only in that browser tab's `sessionStorage`) to view contact messages,
+newsletter subscribers, and job applications. See `docs/runbook.md` for rotating the password.
 
 ## Project status
 
 Everything from the original phased plan that applies to a corporate content site (no ledger, no mobile app,
 no payments — see `docs/architecture.md` for the full reasoning) is done: security hardening, tests, CI,
-architecture/threat-model docs, an OpenAPI contract, and a minimal admin UI. Three things were deliberately
-left as your decision rather than imposed, because each is a real trade-off, not a default:
+architecture/threat-model docs, an OpenAPI contract, real admin login, automated backups, and branch
+protection on CI. One thing remains a known, documented trade-off rather than a silent gap:
 
-1. **CI doesn't gate the Railway deploy.** Pushing to `main` deploys immediately; GitHub Actions reports
-   pass/fail but doesn't block it. Fixing this means adopting a PR-based workflow (branch protection +
-   required status checks) — a process change, not a settings flip. See `docs/architecture.md`'s migration
-   plan.
-2. **No backup of the submissions volume.** If the Railway volume is lost, submitted messages/subscribers/
-   applications are gone with it. Low-probability at current volume, worth revisiting if that data starts
-   to matter more.
-3. **Single shared admin token, not per-person login.** Deliberately minimal for one or two occasional
-   readers — see `docs/architecture.md` for when to upgrade it.
+- **In-process write lock, not distributed.** The concurrency fix (Phase 1) only protects against races
+  within one running backend instance. Not a concern today (single replica, confirmed in the Railway service
+  config) — the trigger to revisit is running more than one replica.
 
-None of these are silently broken — each is flagged here, in `docs/runbook.md`, and in the commit history at
-the point the decision was made.
+Nothing here is silently broken — it's flagged here, in `docs/runbook.md`, and in the commit history at the
+point the decision was made.
 
 ## Testing
 

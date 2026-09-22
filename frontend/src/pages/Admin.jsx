@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Lock, Unlock, RefreshCw, AlertCircle } from "lucide-react";
-import { getAdminMessages, getAdminSubscribers, getAdminApplications } from "../api.js";
+import { Lock, Unlock, RefreshCw, AlertCircle, Loader2 } from "lucide-react";
+import { adminLogin, getAdminMessages, getAdminSubscribers, getAdminApplications } from "../api.js";
 
 const TOKEN_KEY = "vink_admin_token";
 const TABS = [
@@ -52,7 +52,9 @@ function DataTable({ rows }) {
 
 export default function Admin() {
   const [token, setToken] = useState(() => sessionStorage.getItem(TOKEN_KEY) || "");
-  const [tokenInput, setTokenInput] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("");
+  const [loginState, setLoginState] = useState({ status: "idle", error: "" });
   const [activeTab, setActiveTab] = useState("messages");
   const [data, setData] = useState({});
   const [status, setStatus] = useState("idle"); // idle | loading | error
@@ -69,10 +71,10 @@ export default function Admin() {
       setStatus("idle");
     } catch (err) {
       setStatus("error");
-      if (/unauthorized/i.test(err.message)) {
+      if (/unauthorized|expired/i.test(err.message)) {
         sessionStorage.removeItem(TOKEN_KEY);
         setToken("");
-        setAuthError("That token was rejected. Check it and try again.");
+        setAuthError(err.message.includes("expired") ? "Your session expired. Please log in again." : "Your session was rejected. Please log in again.");
       } else {
         setError(err.message);
       }
@@ -84,12 +86,19 @@ export default function Admin() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, activeTab]);
 
-  const handleUnlock = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setAuthError("");
-    sessionStorage.setItem(TOKEN_KEY, tokenInput);
-    setToken(tokenInput);
-    setTokenInput("");
+    setLoginState({ status: "loading", error: "" });
+    try {
+      const session = await adminLogin(username, password);
+      sessionStorage.setItem(TOKEN_KEY, session.token);
+      setToken(session.token);
+      setPassword("");
+      setLoginState({ status: "idle", error: "" });
+      setAuthError("");
+    } catch (err) {
+      setLoginState({ status: "idle", error: err.message });
+    }
   };
 
   const handleLock = () => {
@@ -101,37 +110,54 @@ export default function Admin() {
   if (!token) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-6">
-        <form onSubmit={handleUnlock} className="w-full max-w-sm rounded-sm border border-vh-line bg-vh-forest-card p-8">
+        <form onSubmit={handleLogin} className="w-full max-w-sm rounded-sm border border-vh-line bg-vh-forest-card p-8">
           <div className="flex items-center gap-2 mb-4">
             <Lock size={18} className="text-vh-gold" />
-            <h1 className="font-display text-lg text-vh-cream">Admin Access</h1>
+            <h1 className="font-display text-lg text-vh-cream">Admin Login</h1>
           </div>
-          <label htmlFor="admin-token" className="text-xs text-vh-cream/60">
-            Admin Token
-          </label>
+
           {authError && (
-            <p className="mt-1 mb-1 flex items-center gap-1.5 text-xs text-red-400">
+            <p className="mb-3 flex items-center gap-1.5 text-xs text-red-400">
               <AlertCircle size={13} /> {authError}
             </p>
           )}
+
+          <label htmlFor="admin-username" className="text-xs text-vh-cream/60">
+            Username
+          </label>
           <input
-            id="admin-token"
-            type="password"
+            id="admin-username"
             required
             autoFocus
-            value={tokenInput}
-            onChange={(e) => setTokenInput(e.target.value)}
-            className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
-            placeholder="Paste the ADMIN_TOKEN value"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="mt-1 mb-3 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
           />
-          <p className="mt-2 text-xs text-vh-cream/40">
-            Stored only for this browser tab session — never sent anywhere except this API.
+
+          <label htmlFor="admin-password" className="text-xs text-vh-cream/60">
+            Password
+          </label>
+          <input
+            id="admin-password"
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
+          />
+
+          {loginState.error && <p className="mt-3 text-xs text-red-400">{loginState.error}</p>}
+
+          <p className="mt-3 text-xs text-vh-cream/40">
+            Session lasts 8 hours and is stored only for this browser tab.
           </p>
           <button
             type="submit"
-            className="mt-4 w-full rounded-sm bg-vh-gold px-5 py-2.5 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+            disabled={loginState.status === "loading"}
+            className="mt-4 w-full flex items-center justify-center gap-2 rounded-sm bg-vh-gold px-5 py-2.5 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors disabled:opacity-60"
           >
-            Unlock
+            {loginState.status === "loading" && <Loader2 size={14} className="animate-spin" />}
+            Log In
           </button>
         </form>
       </div>

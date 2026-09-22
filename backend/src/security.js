@@ -1,27 +1,52 @@
 import rateLimit from "express-rate-limit";
-import { ADMIN_TOKEN, IS_TEST } from "./env.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { ADMIN_USERNAME, ADMIN_PASSWORD_HASH, JWT_SECRET, JWT_EXPIRY, ADMIN_AUTH_CONFIGURED, IS_TEST } from "./env.js";
 
-// --- admin auth ------------------------------------------------------------
+// --- admin auth --------------------------------------------------------------
+// Username/password login issuing a short-lived signed JWT, replacing the
+// earlier single-shared-bearer-token scheme. Protects the internal read
+// endpoints (contact messages, newsletter subscribers, job applications) —
+// all three leak real visitor PII and were originally unauthenticated
+// entirely. See Phase 0 audit, Finding 1, and docs/architecture.md for why
+// this is a login system now rather than a static token.
 
 /**
- * Protects the internal read endpoints (contact messages, newsletter
- * subscribers, job applications) — all three leak real visitor PII and were
- * previously unauthenticated. See Phase 0 audit, Finding 1.
- *
- * Fails closed: if ADMIN_TOKEN isn't configured on the environment, the
- * endpoint is disabled (503) rather than silently open. An unset token
- * must never mean "no auth required."
+ * Verifies credentials and returns a signed session token, or null if the
+ * credentials are wrong. Fails closed if ADMIN_PASSWORD_HASH/JWT_SECRET
+ * aren't configured — caller is responsible for checking ADMIN_AUTH_CONFIGURED
+ * first and returning 503 in that case.
+ */
+export async function attemptLogin(username, password) {
+  if (username !== ADMIN_USERNAME) return null;
+  const valid = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+  if (!valid) return null;
+  const token = jwt.sign({ sub: username }, JWT_SECRET, { expiresIn: JWT_EXPIRY });
+  const decoded = jwt.decode(token);
+  return { token, expiresAt: new Date(decoded.exp * 1000).toISOString() };
+}
+
+/**
+ * Fails closed: if admin auth isn't configured on the environment, every
+ * protected endpoint is disabled (503) rather than silently open. An unset
+ * config must never mean "no auth required."
  */
 export function requireAdmin(req, res, next) {
-  if (!ADMIN_TOKEN) {
+  if (!ADMIN_AUTH_CONFIGURED) {
     return res.status(503).json({ error: "Admin endpoints are not configured on this environment." });
   }
   const header = req.get("authorization") || "";
   const [scheme, token] = header.split(" ");
-  if (scheme !== "Bearer" || token !== ADMIN_TOKEN) {
+  if (scheme !== "Bearer" || !token) {
     return res.status(401).json({ error: "Unauthorized." });
   }
-  next();
+  try {
+    req.admin = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch (err) {
+    const message = err.name === "TokenExpiredError" ? "Session expired. Please log in again." : "Unauthorized.";
+    return res.status(401).json({ error: message });
+  }
 }
 
 // --- rate limiting -----------------------------------------------------------
@@ -51,10 +76,19 @@ export const submissionLimiter = limiterOrNoop({
 });
 
 // Admin read endpoints: much higher ceiling (legitimate polling), but still
-// bounded so a leaked/brute-forced token can't be used to hammer the API.
+// bounded so a stolen/expired-but-replayed token can't be used to hammer the API.
 export const adminLimiter = limiterOrNoop({
   windowMs: 15 * 60 * 1000,
   limit: 120,
+});
+
+// Login attempts: tight. This is the one endpoint an attacker would actually
+// want to brute-force (guess the password), unlike the read endpoints above
+// which need a valid token already.
+export const loginLimiter = limiterOrNoop({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  message: "Too many login attempts. Please try again in 15 minutes.",
 });
 
 // --- validation --------------------------------------------------------------
