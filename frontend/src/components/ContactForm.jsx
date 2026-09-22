@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { submitContact } from "../api.js";
@@ -10,6 +10,9 @@ export default function ContactForm({ compact = false }) {
   const prefillSubject = searchParams.get("subject");
   const prefillSector = searchParams.get("sector");
   const validSubject = SUBJECT_OPTIONS.includes(prefillSubject) ? prefillSubject : "General Enquiry";
+
+  const idPrefix = useId();
+  const fieldId = (name) => `${idPrefix}-${name}`;
 
   const [form, setForm] = useState({
     name: "",
@@ -54,19 +57,27 @@ export default function ContactForm({ compact = false }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="text-xs text-vh-cream/60">Full Name *</label>
+          <label htmlFor={fieldId("name")} className="text-xs text-vh-cream/60">
+            Full Name *
+          </label>
           <input
+            id={fieldId("name")}
             required
+            maxLength={200}
             value={form.name}
             onChange={update("name")}
             className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
           />
         </div>
         <div>
-          <label className="text-xs text-vh-cream/60">Email *</label>
+          <label htmlFor={fieldId("email")} className="text-xs text-vh-cream/60">
+            Email *
+          </label>
           <input
+            id={fieldId("email")}
             type="email"
             required
+            maxLength={254}
             value={form.email}
             onChange={update("email")}
             className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
@@ -75,16 +86,23 @@ export default function ContactForm({ compact = false }) {
       </div>
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="text-xs text-vh-cream/60">Phone</label>
+          <label htmlFor={fieldId("phone")} className="text-xs text-vh-cream/60">
+            Phone
+          </label>
           <input
+            id={fieldId("phone")}
+            maxLength={40}
             value={form.phone}
             onChange={update("phone")}
             className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
           />
         </div>
         <div>
-          <label className="text-xs text-vh-cream/60">Subject</label>
+          <label htmlFor={fieldId("subject")} className="text-xs text-vh-cream/60">
+            Subject
+          </label>
           <select
+            id={fieldId("subject")}
             value={form.subject}
             onChange={update("subject")}
             className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
@@ -98,9 +116,13 @@ export default function ContactForm({ compact = false }) {
         </div>
       </div>
       <div>
-        <label className="text-xs text-vh-cream/60">Message *</label>
+        <label htmlFor={fieldId("message")} className="text-xs text-vh-cream/60">
+          Message *
+        </label>
         <textarea
+          id={fieldId("message")}
           required
+          maxLength={5000}
           rows={compact ? 3 : 5}
           value={form.message}
           onChange={update("message")}

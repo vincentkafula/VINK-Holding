@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { Briefcase, MapPin, Clock, Loader2, CheckCircle2, X } from "lucide-react";
 import PageBanner from "../components/PageBanner.jsx";
 import SlidingAdverts from "../components/SlidingAdverts.jsx";
@@ -7,6 +7,8 @@ import { getJobs, submitApplication } from "../api.js";
 function ApplyModal({ job, onClose }) {
   const [form, setForm] = useState({ name: "", email: "", phone: "", coverNote: "" });
   const [state, setState] = useState({ status: "idle", message: "", reference: "" });
+  const idPrefix = useId();
+  const fieldId = (name) => `${idPrefix}-${name}`;
 
   if (!job) return null;
 
@@ -50,19 +52,27 @@ function ApplyModal({ job, onClose }) {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs text-vh-cream/60">Full Name *</label>
+                  <label htmlFor={fieldId("name")} className="text-xs text-vh-cream/60">
+                    Full Name *
+                  </label>
                   <input
+                    id={fieldId("name")}
                     required
+                    maxLength={200}
                     value={form.name}
                     onChange={update("name")}
                     className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-vh-cream/60">Email *</label>
+                  <label htmlFor={fieldId("email")} className="text-xs text-vh-cream/60">
+                    Email *
+                  </label>
                   <input
+                    id={fieldId("email")}
                     type="email"
                     required
+                    maxLength={254}
                     value={form.email}
                     onChange={update("email")}
                     className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
@@ -70,17 +80,25 @@ function ApplyModal({ job, onClose }) {
                 </div>
               </div>
               <div>
-                <label className="text-xs text-vh-cream/60">Phone</label>
+                <label htmlFor={fieldId("phone")} className="text-xs text-vh-cream/60">
+                  Phone
+                </label>
                 <input
+                  id={fieldId("phone")}
+                  maxLength={40}
                   value={form.phone}
                   onChange={update("phone")}
                   className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold"
                 />
               </div>
               <div>
-                <label className="text-xs text-vh-cream/60">Why you're a fit</label>
+                <label htmlFor={fieldId("coverNote")} className="text-xs text-vh-cream/60">
+                  Why you're a fit
+                </label>
                 <textarea
+                  id={fieldId("coverNote")}
                   rows={4}
+                  maxLength={5000}
                   value={form.coverNote}
                   onChange={update("coverNote")}
                   className="mt-1 w-full bg-vh-black/40 border border-vh-line rounded-sm px-3 py-2 text-sm text-vh-cream focus:outline-none focus:border-vh-gold resize-none"

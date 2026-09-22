@@ -74,8 +74,58 @@ changing the fetch base URL in `frontend/src/api.js` to the full backend URL).
   this setting.
 - `FRONTEND_URL` — restricts CORS to this origin in production. Without it, the API accepts requests from any
   origin (useful for local dev against the Vite server).
+- `ADMIN_TOKEN` — required to access `/api/contact/messages`, `/api/newsletter/subscribers`, and
+  `/api/careers/applications` (send `Authorization: Bearer <token>`). **These three endpoints return 503 —
+  not open access — if this isn't set.** Generate a long random value, e.g. `openssl rand -hex 32`. There is
+  no full login system on this site (see Security model below for why, and what upgrading it would involve).
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `NOTIFY_EMAIL` — optional. All five (four creds + the
+  destination address) must be set for email notifications on new submissions to fire; if any are missing,
+  the feature is silently disabled and submissions still succeed normally. Any standard SMTP provider works
+  (Resend, SendGrid, Postmark, etc.) — confirm your provider's host/port/auth details before setting these.
 
-## Notes on the design
+Copy `backend/.env.example` to `backend/.env` and fill in `ADMIN_TOKEN` at minimum before running locally.
+
+## Security model
+
+This site has no user accounts, no payments, and no money movement — it's a corporate marketing/investor-relations
+site, not a banking platform, so the controls below are scoped to what actually applies:
+
+- **Admin endpoints** (the three PII-bearing GETs above) are protected by a single shared bearer token, not a
+  full login system. That's an intentional minimal starting point for a site with one or two internal readers,
+  not a shortcut — if more people need access, or you need per-person audit trails, that's the trigger to build
+  real auth (see `docs/content-audit.md`'s sibling audit notes for the reasoning).
+- **Rate limiting**: all three public POST endpoints (`/newsletter`, `/contact`, `/careers/apply`) are limited
+  to 8 requests per 15 minutes per IP. Admin GETs are limited to 120 per 15 minutes.
+- **Input validation**: every field has a server-side max length (see `backend/src/security.js`) in addition to
+  client-side `maxLength` attributes — the server never trusts the client's validation alone.
+- **Concurrent-write safety**: submissions are serialized per data file (see `backend/src/store.js`) so two
+  simultaneous submissions can't race and silently drop one — verified by an automated concurrency test, not
+  just reasoned about (see Testing below).
+- **Security headers** via `helmet`, **structured request logging** via `morgan` (disabled in tests).
+- **CI-enforced**: `npm audit --audit-level=high` runs on every push for both frontend and backend, plus a
+  secret-scan (gitleaks) — see `.github/workflows/ci.yml`. Note this reports pass/fail on GitHub but does not
+  currently block the Railway auto-deploy, which redeploys on push independent of CI result — wiring that up
+  is a known gap (see below).
+
+## Testing
+
+```bash
+cd backend && npm test     # node --test — 17 tests: validation, admin auth, rate-limit behavior, PDF
+                            # generation, and a concurrency test proving the write-race fix actually works
+cd frontend && npm test    # vitest — nav routing + contact form submit/error/prefill behavior
+```
+
+## Running locally with Docker Compose
+
+```bash
+cp backend/.env.example backend/.env   # fill in ADMIN_TOKEN at minimum
+docker compose up --build
+```
+
+Backend on http://localhost:4000, frontend on http://localhost:5173. This is an addition on top of the
+plain `npm run dev` workflow below, not a replacement — use whichever fits what you're doing.
+
+## Running locally (without Docker)
 
 The photographic imagery from the original design (skyline, boardroom,
 sector photos) has been replaced with matching dark-green/gold gradient and
