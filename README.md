@@ -86,7 +86,7 @@ changing the fetch base URL in `frontend/src/api.js` to the full backend URL).
   the feature is silently disabled and submissions still succeed normally. Any standard SMTP provider works
   (Resend, SendGrid, Postmark, etc.) — confirm your provider's host/port/auth details before setting these.
 
-Copy `backend/.env.example` to `backend/.env` and fill in `ADMIN_TOKEN` at minimum before running locally.
+Copy `backend/.env.example` to `backend/.env` and fill in `ADMIN_PASSWORD_HASH` and `JWT_SECRET` at minimum before running locally.
 
 ## Security model
 
@@ -106,22 +106,24 @@ site, not a banking platform, so the controls below are scoped to what actually 
   just reasoned about (see Testing below).
 - **Security headers** via `helmet`, **structured request logging** via `morgan` (disabled in tests).
 - **CI-enforced**: `npm audit --audit-level=high` runs on every push for both frontend and backend, plus a
-  secret-scan (gitleaks) — see `.github/workflows/ci.yml`. Note this reports pass/fail on GitHub but does not
-  currently block the Railway auto-deploy, which redeploys on push independent of CI result — wiring that up
-  is a known gap (see below).
+  secret-scan (gitleaks) and the OpenAPI lint/drift check — see `.github/workflows/ci.yml`. Branch protection
+  on `main` requires these checks to pass before a PR can merge, with `enforce_admins: false` so the repo
+  owner can still push directly for urgent fixes — a required check can never pass for a commit that hasn't
+  had it run yet, so a hard block would have broken the direct-push workflow this project has used for every
+  deploy so far. Verified this doesn't block direct pushes before relying on it.
 
 ## Documentation
 
 - `docs/architecture.md` — C4 context/container diagrams (Mermaid), the actual data model (three flat JSON
-  shapes — there's no relational database), and a short migration plan for the two items deliberately
-  deferred from Phase 1.
-- `docs/threat-model.md` — STRIDE analysis mapped to what's actually mitigated in the code, with the two
-  accepted-risk items explained rather than silently ignored.
-- `backend/openapi.yaml` — OpenAPI 3.1 contract for all 21 routes. Lints clean (`npm run lint:openapi` in
+  shapes — there's no relational database), and a migration plan covering the three items resolved after
+  the initial security pass (real login, automated backups, CI-gated deploys).
+- `docs/threat-model.md` — STRIDE analysis mapped to what's actually mitigated in the code.
+- `backend/openapi.yaml` — OpenAPI 3.1 contract for all 22 routes. Lints clean (`npm run lint:openapi` in
   `backend/`) and is checked against the live route list in `src/app.js` on every run, so it can't silently
   drift from the real API.
-- `docs/runbook.md` — what to actually do when the site's down, the admin token's lost, or you need to check
-  whether email notifications are working. Written from real incidents on this project, not hypotheticals.
+- `docs/runbook.md` — what to actually do when the site's down, the admin password's lost, you need to check
+  or manually trigger a backup, or want to check whether email notifications are working. Written from real
+  incidents on this project, not hypotheticals.
 
 ## Admin access
 
@@ -154,7 +156,7 @@ cd frontend && npm test    # vitest — nav routing + contact form submit/error/
 ## Running locally with Docker Compose
 
 ```bash
-cp backend/.env.example backend/.env   # fill in ADMIN_TOKEN at minimum
+cp backend/.env.example backend/.env   # fill in ADMIN_PASSWORD_HASH and JWT_SECRET at minimum
 docker compose up --build
 ```
 

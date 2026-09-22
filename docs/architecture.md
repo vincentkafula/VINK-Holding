@@ -32,7 +32,7 @@ C4Container
 
     Container_Boundary(site, "Vink Holdings site") {
         Container(spa, "Frontend", "React 19 + Vite + React Router", "10 routed pages, static build served by 'serve'")
-        Container(api, "Backend API", "Node 22 + Express", "21 routes: 18 public reads/writes, 3 admin-gated reads")
+        Container(api, "Backend API", "Node 22 + Express", "22 routes: 19 public reads/writes, 3 session-gated admin reads")
         ContainerDb(content, "content.json", "Reference data, ships with the code", "sectors, news, jobs, markets, leadership, etc. — read-only at runtime")
         ContainerDb(volume, "Railway volume (/data)", "JSON files", "subscribers.json, messages.json, applications.json — the only writable state")
     }

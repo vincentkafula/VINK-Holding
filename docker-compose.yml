@@ -10,7 +10,7 @@ services:
       DATA_DIR: /data
       # No FRONTEND_URL set here on purpose — Compose is for local dev, so
       # CORS stays open to any origin. Set it explicitly in production.
-      # ADMIN_TOKEN, SMTP_* are read from a local .env file (see .env.example)
+      # ADMIN_PASSWORD_HASH, JWT_SECRET, SMTP_* are read from a local .env file (see .env.example)
       # via env_file below, so nothing sensitive is hardcoded here.
     env_file:
       - ./backend/.env
