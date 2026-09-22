@@ -110,7 +110,7 @@ site, not a banking platform, so the controls below are scoped to what actually 
 ## Testing
 
 ```bash
-cd backend && npm test     # node --test — 17 tests: validation, admin auth, rate-limit behavior, PDF
+cd backend && npm test     # node --test — 16 tests: validation, admin auth, rate-limit behavior, PDF
                             # generation, and a concurrency test proving the write-race fix actually works
 cd frontend && npm test    # vitest — nav routing + contact form submit/error/prefill behavior
 ```
@@ -124,6 +124,13 @@ docker compose up --build
 
 Backend on http://localhost:4000, frontend on http://localhost:5173. This is an addition on top of the
 plain `npm run dev` workflow below, not a replacement — use whichever fits what you're doing.
+
+Note: the Dockerfiles are named `Dockerfile.local` in both `backend/` and `frontend/`, not `Dockerfile` —
+this project deploys on Railway via Railpack (buildCommand/startCommand in Railway's service config), and a
+file literally named `Dockerfile` gets auto-detected and used by Railway's build step regardless of that
+config, which broke the frontend service in production once (see git history around the Phase 1 commit).
+`docker-compose.yml` points at `Dockerfile.local` explicitly, so this only matters if you're looking for the
+Dockerfiles and wondering why they're not named the usual way.
 
 ## Running locally (without Docker)
 
