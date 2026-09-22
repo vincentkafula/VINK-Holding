@@ -12,6 +12,12 @@ function get(path) {
   return fetch(`${BASE}${path}`).then(handle);
 }
 
+function adminGet(path, token) {
+  return fetch(`${BASE}${path}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  }).then(handle);
+}
+
 function post(path, body) {
   return fetch(`${BASE}${path}`, {
     method: "POST",
@@ -38,3 +44,8 @@ export const getArticle = (id) => get(`/news/${id}`);
 export const subscribeNewsletter = (email) => post("/newsletter", { email });
 export const submitContact = (payload) => post("/contact", payload);
 export const submitApplication = (payload) => post("/careers/apply", payload);
+
+// --- admin (bearer-token gated) -----------------------------------------
+export const getAdminMessages = (token) => adminGet("/contact/messages", token);
+export const getAdminSubscribers = (token) => adminGet("/newsletter/subscribers", token);
+export const getAdminApplications = (token) => adminGet("/careers/applications", token);

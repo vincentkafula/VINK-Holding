@@ -93,7 +93,7 @@ site, not a banking platform, so the controls below are scoped to what actually 
 - **Admin endpoints** (the three PII-bearing GETs above) are protected by a single shared bearer token, not a
   full login system. That's an intentional minimal starting point for a site with one or two internal readers,
   not a shortcut — if more people need access, or you need per-person audit trails, that's the trigger to build
-  real auth (see `docs/content-audit.md`'s sibling audit notes for the reasoning).
+  real auth (isolated to `requireAdmin` in `backend/src/security.js`, so the swap doesn't touch anything else).
 - **Rate limiting**: all three public POST endpoints (`/newsletter`, `/contact`, `/careers/apply`) are limited
   to 8 requests per 15 minutes per IP. Admin GETs are limited to 120 per 15 minutes.
 - **Input validation**: every field has a server-side max length (see `backend/src/security.js`) in addition to
@@ -117,6 +117,34 @@ site, not a banking platform, so the controls below are scoped to what actually 
 - `backend/openapi.yaml` — OpenAPI 3.1 contract for all 21 routes. Lints clean (`npm run lint:openapi` in
   `backend/`) and is checked against the live route list in `src/app.js` on every run, so it can't silently
   drift from the real API.
+- `docs/runbook.md` — what to actually do when the site's down, the admin token's lost, or you need to check
+  whether email notifications are working. Written from real incidents on this project, not hypotheticals.
+
+## Admin access
+
+`/admin` — not linked in navigation, reached by direct URL. Paste the `ADMIN_TOKEN` value (stored only in
+that browser tab's `sessionStorage`) to view contact messages, newsletter subscribers, and job applications.
+See `docs/runbook.md` for rotating a lost token.
+
+## Project status
+
+Everything from the original phased plan that applies to a corporate content site (no ledger, no mobile app,
+no payments — see `docs/architecture.md` for the full reasoning) is done: security hardening, tests, CI,
+architecture/threat-model docs, an OpenAPI contract, and a minimal admin UI. Three things were deliberately
+left as your decision rather than imposed, because each is a real trade-off, not a default:
+
+1. **CI doesn't gate the Railway deploy.** Pushing to `main` deploys immediately; GitHub Actions reports
+   pass/fail but doesn't block it. Fixing this means adopting a PR-based workflow (branch protection +
+   required status checks) — a process change, not a settings flip. See `docs/architecture.md`'s migration
+   plan.
+2. **No backup of the submissions volume.** If the Railway volume is lost, submitted messages/subscribers/
+   applications are gone with it. Low-probability at current volume, worth revisiting if that data starts
+   to matter more.
+3. **Single shared admin token, not per-person login.** Deliberately minimal for one or two occasional
+   readers — see `docs/architecture.md` for when to upgrade it.
+
+None of these are silently broken — each is flagged here, in `docs/runbook.md`, and in the commit history at
+the point the decision was made.
 
 ## Testing
 
@@ -143,7 +171,7 @@ config, which broke the frontend service in production once (see git history aro
 `docker-compose.yml` points at `Dockerfile.local` explicitly, so this only matters if you're looking for the
 Dockerfiles and wondering why they're not named the usual way.
 
-## Running locally (without Docker)
+## Notes on the design
 
 The photographic imagery from the original design (skyline, boardroom,
 sector photos) has been replaced with matching dark-green/gold gradient and
