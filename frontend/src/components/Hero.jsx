@@ -140,13 +140,13 @@ export default function Hero() {
         <div className="mt-9 flex flex-wrap items-center gap-4">
           <Link
             to="/contact?subject=Investor+Enquiry"
-            className="rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+            className="btn-gold"
           >
             Talk to Investor Relations →
           </Link>
           <Link
             to="/businesses"
-            className="flex items-center gap-2 rounded-sm border border-vh-cream/30 px-6 py-3 text-sm font-medium text-vh-cream hover:border-vh-gold hover:text-vh-gold transition-colors"
+            className="btn-outline"
           >
             See Our Six Sectors
           </Link>

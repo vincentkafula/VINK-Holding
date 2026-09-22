@@ -30,7 +30,7 @@ export default function WhyPartner() {
 
           <Link
             to="/about"
-            className="mt-9 inline-block rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+            className="btn-gold mt-9"
           >
             Learn More About Us →
           </Link>

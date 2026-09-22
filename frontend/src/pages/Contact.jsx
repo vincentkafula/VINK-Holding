@@ -18,14 +18,14 @@ export default function Contact() {
       />
 
       <section className="px-6 lg:px-8 py-16 max-w-7xl mx-auto grid lg:grid-cols-5 gap-10">
-        <div className="lg:col-span-3 rounded-sm border border-vh-line bg-vh-forest-card p-6 sm:p-8">
+        <div className="lg:col-span-3 card-premium p-6 sm:p-8">
           <h2 className="font-display text-xl text-vh-cream mb-1">Send us a message</h2>
           <p className="text-xs text-vh-cream/50 mb-6">We typically respond within 2 business days.</p>
           <ContactForm />
         </div>
 
         <div className="lg:col-span-2 space-y-6">
-          <div className="rounded-sm border border-vh-line bg-vh-forest-card p-6">
+          <div className="card-premium p-6">
             <p className="text-xs tracking-[0.15em] text-vh-gold mb-4">DIRECT CONTACT</p>
             <ul className="space-y-3 text-sm">
               <li>
@@ -49,7 +49,7 @@ export default function Contact() {
             </ul>
           </div>
 
-          <div className="rounded-sm border border-vh-line bg-vh-forest-card p-6">
+          <div className="card-premium p-6">
             <p className="text-xs tracking-[0.15em] text-vh-gold mb-4">OUR OFFICES</p>
             <ul className="space-y-4">
               {OFFICES.map((office) => (

@@ -71,7 +71,7 @@ export default function News() {
             {filtered.map((item, i) => (
               <article
                 key={item.id}
-                className="rounded-sm border border-vh-line bg-vh-forest-card overflow-hidden hover:border-vh-gold/50 transition-colors"
+                className="card-premium overflow-hidden hover:border-vh-gold/50 transition-colors"
               >
                 <div className="h-40 relative" style={{ background: `linear-gradient(135deg, ${HUES[i % HUES.length]}, #0e2118)` }}>
                   <span

@@ -10,6 +10,7 @@
   --color-vh-forest-card: #122619;
   --color-vh-gold: #d3a24c;
   --color-vh-gold-light: #e8c988;
+  --color-vh-gold-deep: #a97a2f;
   --color-vh-cream: #f4efe4;
   --color-vh-green-accent: #3f7a4d;
   --color-vh-line: rgba(211, 162, 76, 0.25);
@@ -23,10 +24,133 @@ body {
   font-family: var(--font-sans);
   background-color: var(--color-vh-black);
   color: var(--color-vh-cream);
+  /* Subtle depth: a soft radial glow anchored top-right plus a fine grain
+     texture, instead of one flat solid color everywhere. Both are cheap
+     (no images) and this is exactly the kind of detail that reads as
+     "designed" rather than "templated" at a glance. */
+  background-image:
+    radial-gradient(ellipse 1200px 700px at 85% -10%, rgba(211, 162, 76, 0.07), transparent 60%),
+    radial-gradient(ellipse 900px 600px at -10% 40%, rgba(63, 122, 77, 0.06), transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  background-attachment: fixed;
 }
 
 .font-display {
   font-family: var(--font-display);
+}
+
+/* --- Premium primitives ---------------------------------------------------
+   Shared utilities so every button/card/badge across the site gets the same
+   depth treatment from one place, instead of each page inventing its own
+   flat rectangle. */
+
+.btn-gold {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-vh-black);
+  background: linear-gradient(155deg, var(--color-vh-gold-light) 0%, var(--color-vh-gold) 55%, var(--color-vh-gold-deep) 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 20px -8px rgba(211, 162, 76, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn-gold:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 12px 28px -8px rgba(211, 162, 76, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.btn-gold:active {
+  transform: translateY(0);
+}
+.btn-gold:disabled {
+  opacity: 0.6;
+  transform: none;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-vh-cream);
+  border: 1px solid rgba(244, 239, 228, 0.25);
+  background: rgba(244, 239, 228, 0.02);
+  backdrop-filter: blur(4px);
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+.btn-outline:hover {
+  border-color: var(--color-vh-gold);
+  color: var(--color-vh-gold);
+  background: rgba(211, 162, 76, 0.06);
+  transform: translateY(-1px);
+}
+
+.card-premium {
+  position: relative;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.025), transparent 40%), var(--color-vh-forest-card);
+  border: 1px solid var(--color-vh-line);
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 12px 24px -16px rgba(0, 0, 0, 0.6);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.card-premium:hover {
+  transform: translateY(-3px);
+  border-color: rgba(211, 162, 76, 0.5);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 20px 36px -18px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(211, 162, 76, 0.08);
+}
+
+.panel-premium {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.02), transparent 40%), var(--color-vh-forest-light);
+  border: 1px solid var(--color-vh-line);
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 16px 32px -20px rgba(0, 0, 0, 0.65);
+}
+
+.icon-badge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 14px -6px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.icon-badge-gold {
+  background: linear-gradient(150deg, var(--color-vh-gold-light), var(--color-vh-gold) 60%, var(--color-vh-gold-deep));
+}
+.icon-badge-green {
+  background: linear-gradient(150deg, #57a367, var(--color-vh-green-accent) 65%, #2c5a37);
+}
+.icon-badge-dark {
+  background: linear-gradient(150deg, #1c3527, var(--color-vh-forest-card) 60%, #0c1a12);
+  border: 1px solid rgba(211, 162, 76, 0.18);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 40px rgba(211, 162, 76, 0.25);
+}
+
+/* --- Scroll reveal ---------------------------------------------------------
+   Applied via the <Reveal> component (IntersectionObserver toggles
+   .is-visible). Off by default so content never flashes unstyled if JS is
+   slow, and fully disabled under reduced-motion below. */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -35,5 +159,9 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

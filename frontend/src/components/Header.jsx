@@ -75,7 +75,7 @@ export default function Header() {
         <div className="hidden lg:block">
           <Link
             to="/contact"
-            className="rounded-sm bg-vh-gold px-5 py-2.5 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+            className="btn-gold"
           >
             Contact Us
           </Link>

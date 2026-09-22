@@ -52,7 +52,7 @@ export default function About() {
           </p>
         </div>
 
-        <div className="rounded-sm border border-vh-line bg-vh-forest-card p-6 h-fit">
+        <div className="card-premium p-6 h-fit">
           <p className="text-xs tracking-[0.15em] text-vh-gold mb-4">AT A GLANCE</p>
           <dl className="space-y-4 text-sm">
             <div className="flex justify-between border-b border-vh-line pb-3">
@@ -87,7 +87,7 @@ export default function About() {
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {markets.map((m) => (
-            <div key={m.code} className="rounded-sm border border-vh-line bg-vh-forest-card p-5">
+            <div key={m.code} className="card-premium p-5">
               <div className="flex items-center gap-2">
                 <MapPin size={15} className="text-vh-gold" />
                 <h3 className="text-sm font-medium text-vh-cream">{m.country}</h3>
@@ -114,7 +114,7 @@ export default function About() {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {leadership.map((person) => (
-            <div key={person.id} className="rounded-sm border border-vh-line bg-vh-forest-card p-5">
+            <div key={person.id} className="card-premium p-5">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-vh-gold to-vh-green-accent" />
               <h3 className="mt-4 text-sm font-medium text-vh-cream">{person.name}</h3>
               <p className="text-xs text-vh-gold mt-0.5">{person.role}</p>
@@ -149,7 +149,7 @@ export default function About() {
         <h2 className="font-display text-2xl text-vh-cream">Want the detail behind these numbers?</h2>
         <Link
           to="/investors#reports"
-          className="mt-6 inline-block rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+          className="btn-gold mt-6"
         >
           Read Our Latest Investor Report →
         </Link>

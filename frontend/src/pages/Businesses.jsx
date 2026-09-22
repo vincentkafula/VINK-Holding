@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Building2, TrendingUp, Leaf, ShoppingCart, Zap, Users, ArrowRight } from "lucide-react";
 import PageBanner from "../components/PageBanner.jsx";
 import SlidingAdverts from "../components/SlidingAdverts.jsx";
+import Reveal from "../components/Reveal.jsx";
 import { getSectors } from "../api.js";
 
 const ICONS = {
@@ -15,7 +16,7 @@ const ICONS = {
 };
 
 const HUES = ["#1d3324", "#1a2b3d", "#2c3018", "#1d2530", "#3d2f14", "#182a2c"];
-const ICON_BG = ["bg-vh-gold", "bg-vh-green-accent", "bg-vh-gold", "bg-vh-green-accent", "bg-vh-gold", "bg-vh-green-accent"];
+const ICON_BG = ["icon-badge-gold", "icon-badge-green", "icon-badge-gold", "icon-badge-green", "icon-badge-gold", "icon-badge-green"];
 
 export default function Businesses() {
   const [sectors, setSectors] = useState([]);
@@ -53,16 +54,14 @@ export default function Businesses() {
             {sectors.map((sector, i) => {
               const Icon = ICONS[sector.icon] || Building2;
               return (
-                <Link
-                  key={sector.id}
-                  to={`/businesses/${sector.id}`}
-                  className="group flex gap-5 rounded-sm border border-vh-line bg-vh-forest-card p-6 hover:border-vh-gold/50 transition-colors"
+                <Reveal key={sector.id} as={Link} delay={(i % 2) * 80} to={`/businesses/${sector.id}`}
+                  className="group flex gap-5 card-premium p-6 hover:border-vh-gold/50 transition-colors"
                 >
                   <div
                     className="w-14 h-14 rounded-sm shrink-0 flex items-center justify-center"
                     style={{ background: `linear-gradient(135deg, ${HUES[i % 6]}, #0e2118)` }}
                   >
-                    <div className={`w-9 h-9 rounded-full ${ICON_BG[i % 6]} flex items-center justify-center`}>
+                    <div className={`icon-badge w-9 h-9 ${ICON_BG[i % 6]}`}>
                       <Icon size={17} className="text-vh-black" />
                     </div>
                   </div>
@@ -80,7 +79,7 @@ export default function Businesses() {
                       View sector detail <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                     </span>
                   </div>
-                </Link>
+                </Reveal>
               );
             })}
           </div>

@@ -56,7 +56,7 @@ export default function BusinessDetail() {
 
         <div className="grid lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
-            <div className="w-14 h-14 rounded-full bg-vh-gold flex items-center justify-center mb-6">
+            <div className="icon-badge icon-badge-gold w-14 h-14 mb-6">
               <Icon size={24} className="text-vh-black" />
             </div>
             <p className="text-vh-cream/75 leading-relaxed text-base">{sector.description}</p>
@@ -87,7 +87,7 @@ export default function BusinessDetail() {
             </div>
           </div>
 
-          <div className="rounded-sm border border-vh-line bg-vh-forest-card p-6 h-fit">
+          <div className="card-premium p-6 h-fit">
             <p className="text-xs tracking-[0.15em] text-vh-gold mb-4">SECTOR AT A GLANCE</p>
             <dl className="space-y-4">
               {sector.stats?.map((stat) => (
@@ -99,7 +99,7 @@ export default function BusinessDetail() {
             </dl>
             <Link
               to={`/contact?subject=Partnership+Enquiry&sector=${encodeURIComponent(sector.name)}`}
-              className="mt-6 block text-center rounded-sm bg-vh-gold px-5 py-2.5 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+              className="btn-gold w-full mt-6"
             >
               {sector.ctaLabel || "Discuss this sector →"}
             </Link>

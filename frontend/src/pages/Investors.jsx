@@ -114,7 +114,7 @@ export default function Investors() {
               </a>
               <Link
                 to="/contact?subject=Investor+Enquiry"
-                className="rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+                className="btn-gold"
               >
                 Request a Call →
               </Link>

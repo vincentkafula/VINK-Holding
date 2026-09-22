@@ -43,7 +43,7 @@ function ApplyModal({ job, onClose }) {
               <p className="mt-2 text-xs text-vh-cream/50">Reference: {state.reference}</p>
               <button
                 onClick={onClose}
-                className="mt-6 rounded-sm bg-vh-gold px-5 py-2.5 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+                className="btn-gold mt-6"
               >
                 Done
               </button>
@@ -108,7 +108,7 @@ function ApplyModal({ job, onClose }) {
               <button
                 type="submit"
                 disabled={state.status === "loading"}
-                className="w-full rounded-sm bg-vh-gold px-5 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+                className="btn-gold w-full"
               >
                 {state.status === "loading" && <Loader2 size={16} className="animate-spin" />}
                 Submit Application
@@ -194,7 +194,7 @@ export default function Careers() {
             {filtered.map((job) => (
               <div
                 key={job.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-sm border border-vh-line bg-vh-forest-card p-5"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 card-premium p-5"
               >
                 <div>
                   <h3 className="text-sm font-medium text-vh-cream">{job.title}</h3>
@@ -213,7 +213,7 @@ export default function Careers() {
                 </div>
                 <button
                   onClick={() => setApplyJob(job)}
-                  className="shrink-0 rounded-sm bg-vh-gold px-5 py-2.5 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+                  className="btn-gold shrink-0"
                 >
                   Apply Now
                 </button>

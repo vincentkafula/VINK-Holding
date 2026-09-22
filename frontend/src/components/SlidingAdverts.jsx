@@ -37,7 +37,7 @@ export default function SlidingAdverts() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="relative rounded-sm border border-vh-line overflow-hidden">
+      <div className="relative rounded-sm border border-vh-line overflow-hidden shadow-[0_12px_28px_-16px_rgba(0,0,0,0.6)]">
         <div
           className="flex transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${active * 100}%)` }}

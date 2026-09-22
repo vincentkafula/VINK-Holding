@@ -56,7 +56,7 @@ export default function NewsUpdates({ limit = 3 }) {
           {items.map((item, i) => (
             <article
               key={item.id}
-              className="rounded-sm border border-vh-line bg-vh-forest-card overflow-hidden hover:border-vh-gold/50 transition-colors"
+              className="card-premium overflow-hidden hover:border-vh-gold/50 transition-colors"
             >
               <div
                 className="h-40 relative overflow-hidden"

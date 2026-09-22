@@ -29,7 +29,7 @@ export default function SupportingSections() {
         <Link
           key={block.to}
           to={block.to}
-          className="group scroll-mt-24 rounded-sm border border-vh-line bg-vh-forest-card p-6 hover:border-vh-gold/50 transition-colors"
+          className="group scroll-mt-24 card-premium p-6 hover:border-vh-gold/50 transition-colors"
         >
           <p className="text-vh-gold text-xs tracking-[0.2em] mb-3">{block.eyebrow.toUpperCase()}</p>
           <h3 className="font-display text-lg text-vh-cream leading-snug">{block.title}</h3>

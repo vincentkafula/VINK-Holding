@@ -13,7 +13,7 @@ const ICONS = {
   users: Users,
 };
 
-const ICON_BG = ["bg-vh-gold", "bg-vh-green-accent", "bg-vh-gold", "bg-vh-green-accent", "bg-vh-gold", "bg-vh-green-accent"];
+const ICON_BG = ["icon-badge-gold", "icon-badge-green", "icon-badge-gold", "icon-badge-green", "icon-badge-gold", "icon-badge-green"];
 
 export default function BusinessSectors() {
   const [sectors, setSectors] = useState([]);
@@ -58,11 +58,11 @@ export default function BusinessSectors() {
               <Link
                 key={sector.id}
                 to={`/businesses/${sector.id}`}
-                className="group text-left rounded-sm border border-vh-line bg-vh-forest-card overflow-hidden hover:border-vh-gold/60 transition-colors block"
+                className="group text-left card-premium overflow-hidden hover:border-vh-gold/60 transition-colors block"
               >
                 <div className="h-28 relative flex items-center justify-center overflow-hidden">
                   <SectorArt icon={sector.icon} />
-                  <div className={`absolute top-2 left-2 w-9 h-9 rounded-full ${ICON_BG[i % 6]} flex items-center justify-center`}>
+                  <div className={`icon-badge absolute top-2 left-2 w-9 h-9 ${ICON_BG[i % 6]}`}>
                     <Icon size={17} className="text-vh-black" />
                   </div>
                 </div>

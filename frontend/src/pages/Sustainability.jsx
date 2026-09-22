@@ -30,8 +30,8 @@ export default function Sustainability() {
           {pillars.map((pillar, i) => {
             const Icon = ICONS[i % ICONS.length];
             return (
-              <div key={pillar.title} className="rounded-sm border border-vh-line bg-vh-forest-card p-6">
-                <div className="w-11 h-11 rounded-full bg-vh-gold flex items-center justify-center">
+              <div key={pillar.title} className="card-premium p-6">
+                <div className="icon-badge icon-badge-gold w-11 h-11">
                   <Icon size={19} className="text-vh-black" />
                 </div>
                 <p className="mt-4 font-display text-lg text-vh-cream leading-snug">{pillar.stat}</p>
@@ -62,7 +62,7 @@ export default function Sustainability() {
         <h2 className="font-display text-xl text-vh-cream">Doing ESG diligence on a potential partnership?</h2>
         <Link
           to="/investors#reports"
-          className="mt-6 inline-block rounded-sm bg-vh-gold px-6 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+          className="btn-gold mt-6"
         >
           Download the Group ESG & Sustainability Report →
         </Link>

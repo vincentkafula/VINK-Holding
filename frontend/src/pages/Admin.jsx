@@ -110,7 +110,7 @@ export default function Admin() {
   if (!token) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-6">
-        <form onSubmit={handleLogin} className="w-full max-w-sm rounded-sm border border-vh-line bg-vh-forest-card p-8">
+        <form onSubmit={handleLogin} className="w-full max-w-sm card-premium p-8">
           <div className="flex items-center gap-2 mb-4">
             <Lock size={18} className="text-vh-gold" />
             <h1 className="font-display text-lg text-vh-cream">Admin Login</h1>
@@ -154,7 +154,7 @@ export default function Admin() {
           <button
             type="submit"
             disabled={loginState.status === "loading"}
-            className="mt-4 w-full flex items-center justify-center gap-2 rounded-sm bg-vh-gold px-5 py-2.5 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors disabled:opacity-60"
+            className="btn-gold w-full mt-4"
           >
             {loginState.status === "loading" && <Loader2 size={14} className="animate-spin" />}
             Log In
@@ -199,7 +199,7 @@ export default function Admin() {
         </button>
       </div>
 
-      <div className="rounded-sm border border-vh-line bg-vh-forest-card p-5">
+      <div className="card-premium p-5">
         {status === "error" && (
           <div className="flex items-center gap-2 text-sm text-red-400 py-4">
             <AlertCircle size={16} /> {error}

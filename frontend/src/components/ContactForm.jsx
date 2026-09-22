@@ -45,7 +45,7 @@ export default function ContactForm({ compact = false }) {
         <p className="mt-2 text-xs text-vh-cream/50">Reference: {state.reference}</p>
         <button
           onClick={() => setState({ status: "idle", message: "", reference: "" })}
-          className="mt-6 rounded-sm bg-vh-gold px-5 py-2.5 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors"
+          className="btn-gold mt-6"
         >
           Send another message
         </button>
@@ -135,7 +135,7 @@ export default function ContactForm({ compact = false }) {
       <button
         type="submit"
         disabled={state.status === "loading"}
-        className="w-full rounded-sm bg-vh-gold px-5 py-3 text-sm font-medium text-vh-black hover:bg-vh-gold-light transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+        className="btn-gold w-full"
       >
         {state.status === "loading" && <Loader2 size={16} className="animate-spin" />}
         Send Message
